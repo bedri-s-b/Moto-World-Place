@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Moto world</title>
+    <link rel="stylesheet" href="/css/reset-css.css" /> <!--href="/static/css/reset-css.css" -->>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <script src="/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div th:fragment="nav">
+
+    <nav>
+        <ul class="nav nav-tabs justify-content-center">
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/home}">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/offers/all">OFFERS</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/offers/add}">ADD OFFERS</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/events/add}">ADD EVENTS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/products/all}">PRODUCTS</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/profile}">PROFILE</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <form th:action="@{/users/logout}" th:method="post">
+                    <input class="btn btn-link nav-link" type="submit" value="LOGOUT">
+                </form>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link"
+                   th:href="@{/users/login}">LOGIN</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/register}">REGISTER</a>
+            </li>
+
+        </ul>
+    </nav>
+
+</div>
+
+<footer th:fragment="footer" class="footer bg-blur rounded" id="test">
+    <!-- Grid container -->
+
+    <div class="text-center p-3" >
+        © 2021 Copyright:
+        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+
+</body>
+</html>

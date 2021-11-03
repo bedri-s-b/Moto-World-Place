@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Moto world</title>
+    <link rel="stylesheet" href="/css/reset-css.css" /> <!--href="/static/css/reset-css.css" -->>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <script src="/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<header th:fragment="nav">
+
+    <nav>
+        <ul class="nav nav-tabs justify-content-center">
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/home}">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/offers/all">OFFERS</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/offers/add}">ADD OFFERS</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/events/add}">ADD EVENTS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/products/all}">PRODUCTS</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/profile}">PROFILE</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <form th:action="@{/users/logout}" th:method="post">
+                    <input class="btn btn-link nav-link" type="submit" value="LOGOUT">
+                </form>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link"
+                   th:href="@{/users/login}">LOGIN</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/register}">REGISTER</a>
+            </li>
+
+        </ul>
+    </nav>
+
+</header>
+<main>
+    <div class="text-light ">
+        <h1 class="display-3 ">
+            <strong class="bg-blur rounded border-left border-white pl-3 border-bottom">Login</strong></h1>
+    </div>
+    <div class="container  p-5 mt-5 w-75">
+
+        <form  th:action="@{/users/login}"
+               method="post">
+
+<!--            <h3 th:if="${isFound}" class="mt-5 text-center">-->
+<!--                <strong class="bg-blur rounded text-danger">-->
+<!--                    Wrong username and password combination.-->
+<!--                </strong>-->
+<!--            </h3>-->
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <label for="username" class="col-sm-2 col-form-label  ">Username</label>
+                    <input th:value="${username}"
+                           type="text" class="form-control"
+                           id="username"
+                           name="username"
+                           aria-describedby="usernameHelpInline" placeholder="Username">
+                    <small id="usernameHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Username length must be between 5 and 20 characters.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <input id="password"
+                            name="password"
+                           type="password" class="form-control"
+                           aria-describedby="passwordHelpInline" placeholder="Password">
+                    <small id="passwordHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                        Password length must be more than 5 characters long.
+                    </small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-info btn-lg" value="Login"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</main>
+
+
+<footer th:fragment="footer" class="footer bg-blur rounded" id="test">
+    <!-- Grid container -->
+
+    <div class="text-center p-3" >
+        © 2021 Copyright:
+        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+
+
+</body>
+
+</html>
