@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/common :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 
 <body>
 
-<header th:replace="fragments/common :: nav"></header>
+<header th:replace="fragments/navbar :: nav"></header>
 
 <main>
     <div class="text-light ">
         <h1 class="display-3 ">
             <strong class="bg-blur rounded border-left border-white pl-3 border-bottom">Groups</strong></h1>
     </div>
-    <form th:action="@{/}" th:method="POST" th:object="${shipIdModel}" class="row justify-content-center">
+    <form class="row justify-content-center">
         <div class="maingroup col-md-8 ">
             <div class="group card flex-md-row bg-blur mb-4 box-shadow h-md-250">
 
@@ -26,8 +27,8 @@
 
                     <div class="col-12">
                         <button type="submit" class="col-3 btn btn-info btn-lg ">Виж събития !!!</button>
-                        <button type="submit" class="col-3 btn btn-danger btn-lg ">Виж членовете !!!</button>
-                        <button type="submit" class="col-3 mx-auto btn btn-danger btn-lg ">Стани член !!!</button>
+                        <button sec:authorize="isAuthenticated()" type="submit" class="col-3 btn btn-danger btn-lg ">Виж членовете !!!</button>
+                        <button type="submit" class="col-3 mx-auto btn btn-danger btn-lg " th:href="@{/users/login}">Стани член !!!</button>
                     </div>
 
                 </section>
@@ -45,7 +46,7 @@
                     <h3 class="h4 mb-2">Free reders have 235</h3>
                     <h3 class="h4 mb-2">Free reders have 235</h3>
 
-                    <div class="col-12">
+                    <div class="col-12" >
                         <button type="submit" class="col-3 btn btn-info btn-lg ">FIRE !!!</button>
                         <button type="submit" class="col-3 btn btn-danger btn-lg ">FIRE !!!</button>
                         <button type="submit" class="col-3 mx-auto btn btn-danger btn-lg ">FIRE !!!</button>
@@ -54,7 +55,7 @@
                 </section>
                 <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
                      style="width: 200px; height: 250px;"
-                     src="../../../../../project-moto-side/html%20and%20css/static/img/russia-izhevsk-august-23-2019-yamaha-motorcycle-shop-cropped-image-of-new-mtm850-in-motocycle-store-famous-world-brand-WBE0HG.jpg"
+                     src="/images/png-transparent-bicycle-motorcycle-motorcycle-logo-motorcycle-cartoon-motorcycle-vector.png"
                      data-holder-rendered="true">
 
             </div>
@@ -69,16 +70,7 @@
 
 </main>
 
-
-<footer class="footer bg-blur rounded" id="test">
-    <!-- Grid container -->
-
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2021 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-</footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 

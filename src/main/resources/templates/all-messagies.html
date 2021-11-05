@@ -5,40 +5,9 @@
 
 <body>
 
-    <header>
+<header th:replace="fragments/navbar :: nav"></header>
 
-        <nav>
-            <ul class="nav nav-tabs justify-content-center">
-              
-                <li class="nav-item">
-                    <a class="nav-link" href="#">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">OFFERS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">PRODUCTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">PRODUCTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">LOGOUT</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">LOGIN</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">REGISTER</a>
-                </li>
-                <!-- <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
-            </ul>
-        </nav>
-     
-     
-    </header>
+
     <main>
 
         <div class="text-light ">
@@ -181,16 +150,10 @@
 
     </main>
 
-    
-<footer class="footer bg-blur rounded" id="test">
-    <!-- Grid container -->
-  
-    <div class="text-center p-3"  style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2021 Copyright:
-      <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
     
 </body>
 </html>

@@ -23,68 +23,68 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                //кой какво може да гледа
-//                .authorizeRequests()
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-//                //достъпно за всички.....
-//                .antMatchers("/","/users/login","/users/register").permitAll()
-//                //достъп за останалите
-//                .antMatchers("/**").authenticated()
-//
-//
-//                // как да се извърши логин
-//                .and()
-//                .formLogin()
-//                .loginPage("/users/login")
-//                .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-//                .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
-//                .defaultSuccessUrl("/")
-//                .failureForwardUrl("/user/login-error")
-//                .and()
-//
-//                // как да се извърши логаут
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID");
+        http
+                //кой какво може да гледа
+                .authorizeRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                //достъпно за всички.....
+                .antMatchers("/","/home","/users/login","/users/register").permitAll()
+                //достъп за останалите
+                .antMatchers("/**").authenticated()
 
-        http.
-                authorizeRequests().
-                // with this line we allow access to all static resources
-                        requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
-                // the next line allows access to the home page, login page and registration for everyone
-                        antMatchers("/", "/users/login", "/users/register").permitAll().
-                // we permit the page below only for admin users
-                       // antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name()).
-                // next we forbid all other pages for unauthenticated users.
-                        antMatchers("/**").authenticated().
-                and().
-                // configure login with login HTML form with two input fileds
-                        formLogin().
-                // our login page is located at http://<serveraddress>>:<port>/users/login
-                        loginPage("/users/login").
-                // this is the name of the <input..> in the login form where the user enters her email/username/etc
-                // the value of this input will be presented to our User details service
-                // those that want to name the input field differently, e.g. email may change the value below
-                        usernameParameter("username").
-                // the name of the <input...> HTML filed that keeps the password
-                        passwordParameter("password").
-                // The place where we should land in case that the login is successful
-                        defaultSuccessUrl("/").
-                // the place where I should land if the login is NOT successful
-                        failureForwardUrl("/users/login-error").
-                and().
-                logout().
-                // This is the URL which spring will implement for me and will log the user out.
-                        logoutUrl("/users/logout").
-                // where to go after the logout.
-                        logoutSuccessUrl("/").
-                // remove the session from server
-                        invalidateHttpSession(true).
-                //delete the cookie that references my session
-                        deleteCookies("JSESSIONID");
+
+                // как да се извърши логин
+                .and()
+                .formLogin()
+                .loginPage("/users/login")
+                .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
+                .defaultSuccessUrl("/")
+                .failureForwardUrl("/users/login-error")
+                .and()
+
+                // как да се извърши логаут
+                .logout()
+                .logoutUrl("/users/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
+
+//        http.
+//                authorizeRequests().
+//                // with this line we allow access to all static resources
+//                        requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
+//                // the next line allows access to the home page, login page and registration for everyone
+//                        antMatchers("/", "/users/login", "/users/register").permitAll().
+//                // we permit the page below only for admin users
+//                       // antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name()).
+//                // next we forbid all other pages for unauthenticated users.
+//                        antMatchers("/**").authenticated().
+//                and().
+//                // configure login with login HTML form with two input fileds
+//                        formLogin().
+//                // our login page is located at http://<serveraddress>>:<port>/users/login
+//                        loginPage("/users/login").
+//                // this is the name of the <input..> in the login form where the user enters her email/username/etc
+//                // the value of this input will be presented to our User details service
+//                // those that want to name the input field differently, e.g. email may change the value below
+//                        usernameParameter("username").
+//                // the name of the <input...> HTML filed that keeps the password
+//                        passwordParameter("password").
+//                // The place where we should land in case that the login is successful
+//                        defaultSuccessUrl("/").
+//                // the place where I should land if the login is NOT successful
+//                        failureForwardUrl("/users/login-error").
+//                and().
+//                logout().
+//                // This is the URL which spring will implement for me and will log the user out.
+//                        logoutUrl("/users/logout").
+//                // where to go after the logout.
+//                        logoutSuccessUrl("/").
+//                // remove the session from server
+//                        invalidateHttpSession(true).
+//                //delete the cookie that references my session
+//                        deleteCookies("JSESSIONID");
 
     }
 

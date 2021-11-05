@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_MESSAGE;
@@ -55,7 +56,8 @@ public class UserServiceImpl implements UserService {
                 .setCity(cityService.findByName(userServiceModel.getCity()))
                 .setPictureUrl(pictureService.getDefaultPic())
                 .setRole(RoleEnum.USER)
-                .setPassword(passwordEncoder.encode(userServiceModel.getPassword()));
+                .setPassword(passwordEncoder.encode(userServiceModel.getPassword()))
+                .setPictureUrl(pictureService.getDefaultPic());
         UserEntity currentUser = userRepository.save(user);
         //message
         UserEntity admin = userRepository.findByUsername("Admin").orElse(null);
@@ -88,6 +90,15 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel findByUsernameAndPassword(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password)
                 .map(user -> modelMapper.map(user, UserServiceModel.class)).orElse(null);
+    }
+
+    @Override
+    public Optional<UserServiceModel> findByUsername(String username) {
+        return userRepository.findByUsername(username).map(u -> {
+            UserServiceModel userServiceModel = modelMapper.map(u, UserServiceModel.class);
+            userServiceModel.setCity(u.getCity().getName());
+            return userServiceModel;
+        });
     }
 
 
