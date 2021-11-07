@@ -79,7 +79,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank" th:href="@{/users/profile/edit}">Edit</a>
+                                    <a class="btn btn-info " target="__blank" th:href="@{/users/profile/{id}/edit(id = *{getId()})}">Edit</a>
 <!--                                    -->
                                 </div>
                             </div>

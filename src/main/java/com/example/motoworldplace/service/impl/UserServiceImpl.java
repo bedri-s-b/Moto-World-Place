@@ -101,5 +101,10 @@ public class UserServiceImpl implements UserService {
         });
     }
 
+    @Override
+    public Optional<UserServiceModel> findById(Long id) {
+        return userRepository.findById(id).map(user -> modelMapper.map(user,UserServiceModel.class));
+    }
+
 
 }

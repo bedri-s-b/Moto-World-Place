@@ -15,4 +15,6 @@ public interface UserService {
 
     Optional<UserServiceModel> findByUsername(String username);
 
+    Optional<UserServiceModel> findById(Long id);
+
 }

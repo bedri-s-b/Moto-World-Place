@@ -11,70 +11,83 @@
 
     <div class="row justify-content-center">
 
-        <div class="col-md-8" th:object="${profile}">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="d-flex flex-column align-items-center text-center">
-                        <img th:src="*{getPictureUrl().getUrl()}"
-                             alt="profile-pic" class="rounded-circle" width="150">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleFormControlFile1"></label>
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            <form class="col-md-8" th:object="${profile}"
+                  th:action="@{/users/profile/{id}/edit(id=*{id})}"
+                  th:method="patch">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img th:src="*{getPictureUrl()}"
+                                 alt="profile-pic" class="rounded-circle" width="150">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleFormControlFile1"></label>
+                                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                </div>
+                            </form>
+                            <div class="mt-3">
+                                <h4 th:text="*{getUsername()}">John Doe</h4>
                             </div>
-                        </form>
-                        <div class="mt-3">
-                            <h4 th:text="*{getUsername()}">John Doe</h4>
                         </div>
-                    </div>
+                        <hr>
+
+                        <div class="row">
+                            <label for="fullName" class="col-4 font-weight-bold">Fullname</label>
+                            <input
+                                    id="fullName"
+                                    th:field="*{fullName}"
+                                    th:errorclass="is-invalid"
+                                    class="form-control col-4"
+                            >
+                            <p class="invalid-feedback col-4 errors alert alert-danger">
+                                Full name length must be between 5 and 20 characters.
+                            </p>
+
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <label for="email" class="col-4 font-weight-bold">email</label>
+                            <input
+                                    id="email"
+                                    th:field="*{email}"
+                                    th:errorclass="is-invalid"
+                                    class="form-control col-4"
+                            >
+                            <p class="invalid-feedback col-4 errors alert alert-danger">
+                                Enter valid email address.
+                            </p>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group row">
+                            <label for="city" class="col-4 col-form-label ">City</label>
+
+                                <select th:field="*{city}" th:errorclass="is-invalid"
+                                        id="city" name="city" class="col-4 custom-select"
+                                        aria-describedby="cityHelpInline">
+                                    <option value="" selected>City</option>
+                                    <option th:each="c : ${T(com.example.motoworldplace.model.entiy.enums.CityEnum).values()}" th:value="${c}" th:text="${c}">Coffee</option>
+
+
+                                </select>
+                                <small id="cityHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                                    You must select the category.
+                                </small>
+
+                        </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Full Name</h6>
-                        </div>
-                        <div th:text="*{getFullName()}" class="col-sm-9 text-secondary">
-                            Kenneth Valdez
-                        </div>
-
-
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Email</h6>
-
-                        </div>
-                        <div class="col-sm-9 text-secondary" th:text="*{getEmail()}">
-                            fip@jukmuh.al
+                    <div class="row justify-content-center">
+                        <div class="col col-md-4 ">
+                            <div class="button-holder d-flex justify-content-center">
+                                <input type="submit" class="btn btn-info btn-lg" value="Edit"/>
+                            </div>
                         </div>
                     </div>
-
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">City</h6>
-
-                        </div>
-                        <div class="col-sm-9 text-secondary" th:text="*{getCity().name()}">
-                            Bay Area, San Francisco, CA
-                        </div>
-
-
-                    </div>
-
                 </div>
-                <hr>
-                <div class="row justify-content-center">
-                    <div class="col col-md-4 ">
-                        <div class="button-holder d-flex justify-content-center">
-                            <input type="submit" class="btn btn-info btn-lg" value="Edit"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+            </form>
     </div>
 
 </main>
