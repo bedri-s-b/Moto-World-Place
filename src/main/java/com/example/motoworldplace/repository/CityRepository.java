@@ -1,7 +1,7 @@
 package com.example.motoworldplace.repository;
 
-import com.example.motoworldplace.model.entiy.CityEntity;
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
+import com.example.motoworldplace.model.entity.CityEntity;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

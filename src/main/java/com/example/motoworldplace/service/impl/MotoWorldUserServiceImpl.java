@@ -1,7 +1,7 @@
 package com.example.motoworldplace.service.impl;
 
-import com.example.motoworldplace.model.entiy.UserEntity;
-import com.example.motoworldplace.model.entiy.enums.RoleEnum;
+import com.example.motoworldplace.model.entity.UserEntity;
+import com.example.motoworldplace.model.entity.enums.RoleEnum;
 import com.example.motoworldplace.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,7 @@
 package com.example.motoworldplace.service.impl;
 
-import com.example.motoworldplace.model.entiy.CityEntity;
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
+import com.example.motoworldplace.model.entity.CityEntity;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
 import com.example.motoworldplace.repository.CityRepository;
 import com.example.motoworldplace.service.CityService;
 import org.springframework.stereotype.Service;

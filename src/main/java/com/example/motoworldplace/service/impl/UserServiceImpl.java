@@ -1,10 +1,12 @@
 package com.example.motoworldplace.service.impl;
 
-import com.example.motoworldplace.model.entiy.MessageEntity;
-import com.example.motoworldplace.model.entiy.UserEntity;
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
-import com.example.motoworldplace.model.entiy.enums.GroupEnum;
-import com.example.motoworldplace.model.entiy.enums.RoleEnum;
+import com.example.motoworldplace.model.binding.UserProfileUpdateBindingModel;
+import com.example.motoworldplace.model.entity.MessageEntity;
+import com.example.motoworldplace.model.entity.PictureEntity;
+import com.example.motoworldplace.model.entity.UserEntity;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
+import com.example.motoworldplace.model.entity.enums.GroupEnum;
+import com.example.motoworldplace.model.entity.enums.RoleEnum;
 import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.repository.GroupRepository;
 import com.example.motoworldplace.repository.UserRepository;
@@ -12,10 +14,12 @@ import com.example.motoworldplace.service.CityService;
 import com.example.motoworldplace.service.MessageService;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.service.cluodinary.CloudinaryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,8 +35,9 @@ public class UserServiceImpl implements UserService {
     private final PictureService pictureService;
     private final MessageService messageService;
     private final PasswordEncoder passwordEncoder;
+    private final CloudinaryService cloudinaryService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, GroupRepository groupRepository, CityService cityService, PictureService pictureService, MessageService messageService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, GroupRepository groupRepository, CityService cityService, PictureService pictureService, MessageService messageService, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.groupRepository = groupRepository;
@@ -40,6 +45,7 @@ public class UserServiceImpl implements UserService {
         this.pictureService = pictureService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
+        this.cloudinaryService = cloudinaryService;
     }
 
 
@@ -54,10 +60,10 @@ public class UserServiceImpl implements UserService {
         user.setGroup(Set.of(groupRepository.findByName(GroupEnum.FREE_RAIDER)));
         user
                 .setCity(cityService.findByName(userServiceModel.getCity()))
-                .setPictureUrl(pictureService.getDefaultPic())
+                .setPicture(pictureService.getDefaultPic())
                 .setRole(RoleEnum.USER)
                 .setPassword(passwordEncoder.encode(userServiceModel.getPassword()))
-                .setPictureUrl(pictureService.getDefaultPic());
+                .setPicture(pictureService.getDefaultPic());
         UserEntity currentUser = userRepository.save(user);
         //message
         UserEntity admin = userRepository.findByUsername("Admin").orElse(null);
@@ -79,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 .setGroup(Set.of(groupRepository.findByName(GroupEnum.FREE_RAIDER)))
                 .setEmail("admin@abv.bg")
                 .setFullName("Admin Adminov")
-                .setPictureUrl(pictureService.getDefaultPic())
+                .setPicture(pictureService.getDefaultPic())
                 .setRole(RoleEnum.ADMIN)
                 .setUsername("Admin")
                 .setPassword(passwordEncoder.encode("admin"));
@@ -104,6 +110,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserServiceModel> findById(Long id) {
         return userRepository.findById(id).map(user -> modelMapper.map(user,UserServiceModel.class));
+    }
+
+    @Override
+    public void replacePic(Long userId, String publicId) {
+        PictureEntity byPublicId = pictureService.findByPublicId(publicId);
+        PictureEntity oldPic = userRepository.findById(userId).get().getPicture();
+        userRepository.changePicture(userId,byPublicId);
+        if (!oldPic.getPublicId().equals("default")){
+            cloudinaryService.delete(oldPic.getPublicId());
+            pictureService.delete(oldPic);
+        }
+    }
+
+    @Override
+    public void editProfile(UserProfileUpdateBindingModel userProfileUpdateModel) throws IOException {
+        Long id = userProfileUpdateModel.getId();
+
+        if (!userProfileUpdateModel.getPicture().isEmpty()){
+            String publicId = pictureService.createNewPicture(userProfileUpdateModel.getPicture(), id);
+            replacePic(id,publicId);
+        }
+
+        UserEntity user = userRepository.findById(id).get();
+
+        user.setEmail(userProfileUpdateModel.getEmail()).
+                setFullName(userProfileUpdateModel.getFullName()).
+                setCity(cityService.findByName(userProfileUpdateModel.getCity()));
+
+        userRepository.save(user);
     }
 
 

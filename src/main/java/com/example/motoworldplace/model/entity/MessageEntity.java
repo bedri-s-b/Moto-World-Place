@@ -1,7 +1,6 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

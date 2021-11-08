@@ -1,6 +1,6 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

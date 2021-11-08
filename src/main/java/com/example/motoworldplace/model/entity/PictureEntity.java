@@ -1,4 +1,4 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -7,6 +7,7 @@ import javax.persistence.Table;
 @Table(name = "pictures")
 public class PictureEntity extends BaseEntity{
     private String url;
+    private String publicId;
 
     public String getUrl() {
         return url;
@@ -14,6 +15,15 @@ public class PictureEntity extends BaseEntity{
 
     public PictureEntity setUrl(String url) {
         this.url = url;
+        return this;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public PictureEntity setPublicId(String publicId) {
+        this.publicId = publicId;
         return this;
     }
 }

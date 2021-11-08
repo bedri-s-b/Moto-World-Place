@@ -1,6 +1,6 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
-import com.example.motoworldplace.model.entiy.enums.RoleEnum;
+import com.example.motoworldplace.model.entity.enums.RoleEnum;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ public class UserEntity extends BaseEntity{
     private String password;
     private Integer age;
     private CityEntity city;
-    private PictureEntity pictureUrl;
+    private PictureEntity picture;
     private Set<GroupEntity> group = new HashSet<>();
     private Set<MessageEntity> receivedMessages = new HashSet<>();
     private Set<MessageEntity> sendMessages = new HashSet<>();
@@ -106,12 +106,12 @@ public class UserEntity extends BaseEntity{
     }
 
     @ManyToOne
-    public PictureEntity getPictureUrl() {
-        return pictureUrl;
+    public PictureEntity getPicture() {
+        return picture;
     }
 
-    public UserEntity setPictureUrl(PictureEntity pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public UserEntity setPicture(PictureEntity pictureUrl) {
+        this.picture = pictureUrl;
         return this;
     }
 

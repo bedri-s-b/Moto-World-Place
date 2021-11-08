@@ -1,6 +1,6 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
-import com.example.motoworldplace.model.entiy.enums.GroupEnum;
+import com.example.motoworldplace.model.entity.enums.GroupEnum;
 
 import javax.persistence.*;
 import java.util.Set;

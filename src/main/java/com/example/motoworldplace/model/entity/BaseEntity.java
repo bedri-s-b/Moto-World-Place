@@ -1,4 +1,4 @@
-package com.example.motoworldplace.model.entiy;
+package com.example.motoworldplace.model.entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

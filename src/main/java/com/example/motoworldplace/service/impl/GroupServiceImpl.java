@@ -1,7 +1,7 @@
 package com.example.motoworldplace.service.impl;
 
-import com.example.motoworldplace.model.entiy.GroupEntity;
-import com.example.motoworldplace.model.entiy.enums.GroupEnum;
+import com.example.motoworldplace.model.entity.GroupEntity;
+import com.example.motoworldplace.model.entity.enums.GroupEnum;
 import com.example.motoworldplace.repository.GroupRepository;
 import com.example.motoworldplace.service.GroupService;
 import org.springframework.stereotype.Service;

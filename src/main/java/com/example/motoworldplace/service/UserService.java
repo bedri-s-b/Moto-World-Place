@@ -1,7 +1,9 @@
 package com.example.motoworldplace.service;
 
+import com.example.motoworldplace.model.binding.UserProfileUpdateBindingModel;
 import com.example.motoworldplace.model.service.UserServiceModel;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface UserService {
@@ -17,4 +19,7 @@ public interface UserService {
 
     Optional<UserServiceModel> findById(Long id);
 
+    void replacePic(Long userId, String url);
+
+    void editProfile(UserProfileUpdateBindingModel userProfileUpdateModel) throws IOException;
 }

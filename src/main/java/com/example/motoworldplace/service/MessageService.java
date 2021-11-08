@@ -1,6 +1,6 @@
 package com.example.motoworldplace.service;
 
-import com.example.motoworldplace.model.entiy.MessageEntity;
+import com.example.motoworldplace.model.entity.MessageEntity;
 
 public interface MessageService {
 

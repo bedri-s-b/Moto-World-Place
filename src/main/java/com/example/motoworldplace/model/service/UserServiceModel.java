@@ -1,10 +1,9 @@
 package com.example.motoworldplace.model.service;
 
-import com.example.motoworldplace.model.entiy.CityEntity;
-import com.example.motoworldplace.model.entiy.GroupEntity;
-import com.example.motoworldplace.model.entiy.MessageEntity;
-import com.example.motoworldplace.model.entiy.PictureEntity;
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
+import com.example.motoworldplace.model.entity.GroupEntity;
+import com.example.motoworldplace.model.entity.MessageEntity;
+import com.example.motoworldplace.model.entity.PictureEntity;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +17,7 @@ public class UserServiceModel {
     private Integer age;
     private CityEnum city;
     private String password;
-    private PictureEntity pictureUrl;
+    private PictureEntity picture;
     private Set<GroupEntity> group = new HashSet<>();
     private Set<MessageEntity> receivedMessages = new HashSet<>();
 
@@ -70,12 +69,12 @@ public class UserServiceModel {
         return this;
     }
 
-    public PictureEntity getPictureUrl() {
-        return pictureUrl;
+    public PictureEntity getPicture() {
+        return picture;
     }
 
-    public UserServiceModel setPictureUrl(PictureEntity pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public UserServiceModel setPicture(PictureEntity picture) {
+        this.picture = picture;
         return this;
     }
 

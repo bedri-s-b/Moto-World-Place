@@ -1,6 +1,6 @@
 package com.example.motoworldplace.model.binding;
 
-import com.example.motoworldplace.model.entiy.enums.CityEnum;
+import com.example.motoworldplace.model.entity.enums.CityEnum;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
