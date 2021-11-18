@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+
+<main>
+
+    <div class="text-light ">
+        <h1 class="display-3">
+            <strong class="bg-blur rounded border-left border-white pl-3 border-bottom">Message</strong>
+        </h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="col-md-12">
+                <div class="chat_container">
+                    <div class="job-box">
+                        <div class="job-box-filter">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <label>Show
+                                        <select name="datatable_length" class="form-control input-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        entries</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inbox-message">
+                            <h1>Outbox Messages</h1>
+                            <ul>
+                                <li th:each="m : ${messagesToUser}" th:object="${m}">
+                                    <a th:href="@{/users/messages/outbox/{id} (id=*{id})}">
+                                        <div class="message-avatar">
+                                            <img th:src="*{getFromUserPicture()}" alt="">
+                                        </div>
+                                        <div class="message-body">
+                                            <div class="message-body-heading">
+                                                <span th:if="*{!readMessage}" class="unread">Unread</span>
+                                                <h5 th:text="'From ' + *{fromUser}"></h5>
+                                            </div>
+                                            <span th:text="*{getTime()}">7 hours ago</span>
+                                            <p th:text="*{message}"></p>
+
+                                        </div>
+
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="col-md-12">
+                <div class="chat_container">
+                    <div class="job-box">
+                        <div class="job-box-filter">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <label>Show
+                                        <select name="datatable_length" class="form-control input-sm">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        entries</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inbox-message">
+                            <h1>Inbox Messages</h1>
+                            <ul>
+                                <li th:each="m : ${messagesFromUser}" th:object="${m}">
+                                    <a th:href="@{/users/messages/inbox/{id} (id=*{id})}">
+                                        <div class="message-avatar">
+                                            <img th:src="*{getToUserPicture()}" alt="picture-user">
+                                        </div>
+                                        <div class="message-body">
+                                            <div class="message-body-heading">
+                                                <span th:if="*{!readMessage}" class="unread">Unread</span>
+                                                <h5 th:text="'To ' + *{toUser}"></h5>
+                                            </div>
+                                            <span th:text="*{getTime()}">7 hours ago</span>
+                                            <p th:text="*{message}"></p>
+
+                                        </div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<script src="/js/app.js"></script>
+
+</body>
+</html>

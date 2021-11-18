@@ -23,7 +23,7 @@ public class DatabaseInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
         pictureService.initPic();
         cityService.initCities();
-        groupService.initGroup();
         userService.initAdmin();
+        groupService.initGroup();
     }
 }

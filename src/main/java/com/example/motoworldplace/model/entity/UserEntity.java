@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
     private String username;
     private String fullName;
@@ -18,14 +18,13 @@ public class UserEntity extends BaseEntity{
     private CityEntity city;
     private PictureEntity picture;
     private Set<GroupEntity> group = new HashSet<>();
-    private Set<MessageEntity> receivedMessages = new HashSet<>();
-    private Set<MessageEntity> sendMessages = new HashSet<>();
+    private RoleEnum groupEnum;
     private RoleEnum role;
 
     public UserEntity() {
     }
 
-    @Column(unique = true,nullable = false,length = 20)
+    @Column(unique = true, nullable = false, length = 20)
     public String getUsername() {
         return username;
     }
@@ -35,7 +34,7 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false,length = 20)
+    @Column(nullable = false, length = 20)
     public String getFullName() {
         return fullName;
     }
@@ -66,27 +65,6 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany(mappedBy = "fromUser",fetch = FetchType.EAGER)
-    public Set<MessageEntity> getReceivedMessages() {
-        return receivedMessages;
-    }
-
-    public UserEntity setReceivedMessages(Set<MessageEntity> receivedMessages) {
-        this.receivedMessages = receivedMessages;
-        return this;
-    }
-
-
-    @OneToMany(mappedBy = "toUser",fetch = FetchType.EAGER)
-    public Set<MessageEntity> getSendMessages() {
-        return sendMessages;
-    }
-
-    public UserEntity setSendMessages(Set<MessageEntity> sendMessages) {
-        this.sendMessages = sendMessages;
-        return this;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -100,6 +78,7 @@ public class UserEntity extends BaseEntity{
     public CityEntity getCity() {
         return city;
     }
+
     public UserEntity setCity(CityEntity city) {
         this.city = city;
         return this;
@@ -131,6 +110,17 @@ public class UserEntity extends BaseEntity{
 
     public UserEntity setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+
+    @Enumerated(EnumType.STRING)
+    public RoleEnum getGroupEnum() {
+        return groupEnum;
+    }
+
+    public UserEntity setGroupEnum(RoleEnum groupEnum) {
+        this.groupEnum = groupEnum;
         return this;
     }
 }

@@ -11,7 +11,8 @@
 
     <div class="row justify-content-center">
 
-        <form class="col-md-8" th:object="${profile}"
+        <form class="col-md-8"
+              th:object="${profile}"
               th:action="@{/users/profile/{id}/edit(id=*{id})}"
               th:method="patch"
               enctype="multipart/form-data">

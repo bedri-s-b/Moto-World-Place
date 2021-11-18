@@ -55,12 +55,6 @@ public class MessageEntity extends BaseEntity {
         return this;
     }
 
-    @PrePersist
-    public void beforeCreate() {
-        System.out.println("BEFORE CREATE!");
-        setTime(LocalDateTime.now().plusHours(3));
-    }
-
     @ManyToOne
     public UserEntity getToUser() {
         return toUser;
@@ -69,5 +63,10 @@ public class MessageEntity extends BaseEntity {
     public MessageEntity setToUser(UserEntity toUser) {
         this.toUser = toUser;
         return this;
+    }
+
+    @PrePersist
+    public void beforeCreate() {
+        setTime(LocalDateTime.now().plusHours(3));
     }
 }

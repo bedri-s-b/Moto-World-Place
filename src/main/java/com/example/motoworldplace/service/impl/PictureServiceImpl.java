@@ -1,19 +1,17 @@
 package com.example.motoworldplace.service.impl;
 
 import com.example.motoworldplace.model.entity.PictureEntity;
-import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.repository.PictureRepository;
 import com.example.motoworldplace.service.PictureService;
-import com.example.motoworldplace.service.UserService;
 import com.example.motoworldplace.service.cluodinary.CloudinaryImg;
 import com.example.motoworldplace.service.cluodinary.CloudinaryService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
-import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_URL_PIC;
+import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_URL_PIC_GROUP;
+import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_URL_PIC_USER;
 
 @Service
 public class PictureServiceImpl implements PictureService {
@@ -34,8 +32,10 @@ public class PictureServiceImpl implements PictureService {
         if (pictureRepository.count() != 0){
             return;
         }
-        PictureEntity picture = new PictureEntity().setUrl(DEFAULT_URL_PIC).setPublicId("default");
-        pictureRepository.save(picture);
+        PictureEntity picture = new PictureEntity().setUrl(DEFAULT_URL_PIC_USER).setPublicId("default");
+        pictureRepository.saveAndFlush(picture);
+        PictureEntity picture2 = new PictureEntity().setUrl(DEFAULT_URL_PIC_GROUP).setPublicId("default");
+        pictureRepository.save(picture2);
     }
 
 
@@ -70,9 +70,19 @@ public class PictureServiceImpl implements PictureService {
         pictureRepository.delete(picture);
     }
 
+    @Override
+    public void savePicture(PictureEntity picture) {
+        pictureRepository.saveAndFlush(picture);
+    }
+
 
     @Override
     public PictureEntity getDefaultPic() {
-        return pictureRepository.findByUrl(DEFAULT_URL_PIC);
+        return pictureRepository.findByUrl(DEFAULT_URL_PIC_USER);
+    }
+
+    @Override
+    public PictureEntity getDefaultGroupPic() {
+        return pictureRepository.findByUrl(DEFAULT_URL_PIC_GROUP);
     }
 }

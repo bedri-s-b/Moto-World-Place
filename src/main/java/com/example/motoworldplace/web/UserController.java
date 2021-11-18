@@ -52,7 +52,7 @@ public class UserController {
         userService.registerUser(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
 
 
-        return "redirect:login";
+        return "redirect:/";
     }
 
     @GetMapping("/login")
@@ -70,6 +70,10 @@ public class UserController {
         return "redirect:/users/login";
     }
 
+//    @GetMapping("/messages/all")
+//    public String allMessages(){
+//        return "all-messages";
+//    }
 
 
     @ModelAttribute

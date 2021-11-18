@@ -1,5 +1,6 @@
 package com.example.motoworldplace.service.impl;
 
+import com.example.motoworldplace.model.entity.GroupEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.entity.enums.RoleEnum;
 import com.example.motoworldplace.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +33,9 @@ public class MotoWorldUserServiceImpl implements UserDetailsService {
     }
 
     private UserDetails mapToUserDetails(UserEntity userEntity){
-       List<GrantedAuthority> authorities = Arrays.stream(RoleEnum.values())
-               .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
-               .collect(Collectors.toList());
+        GrantedAuthority authority =  new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().name());
+        GrantedAuthority authority1 =  new SimpleGrantedAuthority("ROLE_" + userEntity.getGroupEnum().name());
+        List<GrantedAuthority> authorities = List.of(authority,authority1);
         return new User(userEntity.getUsername(),userEntity.getPassword(),authorities);
     }
 }

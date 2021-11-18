@@ -10,6 +10,8 @@ public interface PictureService {
 
     PictureEntity getDefaultPic();
 
+    PictureEntity getDefaultGroupPic();
+
     void initPic();
 
     String createNewPicture(MultipartFile picture, Long idCurrentUser) throws IOException;
@@ -21,4 +23,6 @@ public interface PictureService {
     boolean deleteByPublicId(String publicId);
 
     void delete(PictureEntity picture);
+
+    void savePicture(PictureEntity picture);
 }
