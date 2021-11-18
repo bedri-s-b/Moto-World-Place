@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+<main>
+    <div class="text-light ">
+        <h1 class="display-3 ">
+            <strong class="bg-blur rounded border-left border-white pl-3 border-bottom">Groups</strong></h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="maingroup col-md-8 ">
+            <div th:each="g : ${groups}"
+                 th:object="${g}"
+                 class="group card flex-md-row bg-blur mb-4 box-shadow h-md-250">
+
+                <section class=" card-body d-flex flex-column align-items-start">
+                    <strong class="h3 mb-4 justify-content-center text-primary" th:text="*{name}">Free reader</strong>
+                    <h3 class="h4 mb-2">членове <span th:text="*{members}">235</span></h3>
+                    <h3 class="h4 mb-2">Предстящи събития<span> мото събор на 23.04.2021</span></h3>
+                    <h3 class="h4 mb-2">Админ на групата <span th:text="*{admin}">User</span></h3>
+                    <h3 class="h4 mb-2">Създадена на <span th:text="*{created}">User</span></h3>
+
+                    <div class="col-12">
+                        <th:block th:if="${g.canJoin}">
+                            <a type="submit" class="col-3 btn btn-outline-success"
+                               th:href="@{/groups/{id}/join(id = *{getId()})}">Join the group !!!</a>
+                        </th:block>
+
+                        <th:block  th:if="${!g.canJoin}">
+                            <a type="submit" th:href="@{/groups/{id}/view(id = *{getId()})}" class="col-3 btn btn-outline-info ">see more...</a>
+                        </th:block>
+                    </div>
+
+
+                </section>
+                <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
+                     style="width: 200px; height: 250px;"
+                     th:src="*{picture}"
+                     data-holder-rendered="true">
+
+            </div>
+
+            <a type="submit" th:href="@{/groups/add}"
+               class="col-md-6 mx-auto btn btn-success btn-lg btn-block mt-5 mb-5">създай група
+            </a>
+        </div>
+
+    </div>
+    </di>
+</main>
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>
