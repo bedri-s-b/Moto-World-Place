@@ -71,7 +71,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupViewModel> findAllGroup(Principal principal) {
         return
                 groupRepository.findAll().stream()
-                        .map(groupEntity -> map(groupEntity,principal.getName()))
+                        .map(groupEntity -> map(groupEntity, principal.getName()))
                         .collect(Collectors.toList());
     }
 
@@ -113,7 +113,6 @@ public class GroupServiceImpl implements GroupService {
                 .setAdmin(group.getAdmin().getUsername())
                 .setPicture(group.getPicture().getUrl())
                 .setCreated(group.getCreated())
-//                .setCanJoin(isMember(userViewModel.getUsername(),id))
                 .setMembers(group.getMembers().size())
                 .setId(group.getId())
                 .setMembersName(group.getMembers().stream().map(UserEntity::getUsername).collect(Collectors.toSet()));
@@ -138,14 +137,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupViewModel> findAllGroupWhichAdmin(String username) {
         return groupRepository.findByAdmin_Username(username).stream()
-                .map(u -> map(u,username)).collect(Collectors.toList());
+                .map(u -> map(u, username)).collect(Collectors.toList());
     }
 
 
-    private GroupViewModel map(GroupEntity groupEntity,String username) {
+    private GroupViewModel map(GroupEntity groupEntity, String username) {
         GroupViewModel groupViewModel = new GroupViewModel();
         groupViewModel.setName(groupEntity.getName());
-        groupViewModel.setCanJoin(isMember(username,groupEntity.getId()));
+        groupViewModel.setCanJoin(isMember(username, groupEntity.getId()));
         groupViewModel.setMembers(groupEntity.getMembers().size());
         groupViewModel.setAdmin(groupEntity.getAdmin().getUsername());
         groupViewModel.setPicture(groupEntity.getPicture().getUrl());
@@ -154,16 +153,23 @@ public class GroupServiceImpl implements GroupService {
         return groupViewModel;
     }
 
+    @Override
     public boolean isMember(String username, Long id) {
 
-        Optional<GroupEntity> group = groupRepository.findById(id);
+        GroupEntity group = groupRepository.findById(id).orElse(null);
 
-        Optional<UserEntity> user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByUsername(username).orElse(null);
 
-        if (user.isEmpty() || group.isEmpty()) {
+        if (user == null || group == null) {
             return false;
         } else {
-            return group.get().getMembers().stream().noneMatch(m -> m.getUsername().equals(username));
+            for (UserEntity m : group.getMembers()) {
+                if (m.getUsername().equals(username)) {
+                    return true;
+                }
+
+            }
         }
+        return false;
     }
 }

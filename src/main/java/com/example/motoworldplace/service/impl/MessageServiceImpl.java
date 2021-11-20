@@ -8,6 +8,7 @@ import com.example.motoworldplace.service.MessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +40,6 @@ public class MessageServiceImpl implements MessageService {
                 }).collect(Collectors.toList());
 
 
-
         return
                 fromUser.stream().sorted(Comparator.comparing(MessageViewModel::getTime).reversed()).collect(Collectors.toList());
 
@@ -58,9 +58,14 @@ public class MessageServiceImpl implements MessageService {
         return toUser.stream().sorted(Comparator.comparing(MessageViewModel::getTime).reversed()).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public MessageViewModel findMessage(Long id) {
-        return messageRepository.findById(id).map(message -> modelMapper.map(message, MessageViewModel.class)).orElseThrow();
+        return messageRepository.findById(id).
+                map(message -> {
+                    message.setReadMessage(true);
+                    return modelMapper.map(message, MessageViewModel.class);
+                }).orElseThrow();
     }
 
     @Override

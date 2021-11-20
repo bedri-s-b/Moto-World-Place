@@ -70,11 +70,6 @@ public class UserController {
         return "redirect:/users/login";
     }
 
-//    @GetMapping("/messages/all")
-//    public String allMessages(){
-//        return "all-messages";
-//    }
-
 
     @ModelAttribute
     public UserRegisterBindingModel userRegisterBindingModel(){

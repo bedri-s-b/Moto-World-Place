@@ -5,6 +5,7 @@ import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/users")
@@ -32,30 +34,42 @@ public class ProfileController {
         this.pictureService = pictureService;
     }
 
+
     @GetMapping("/profile")
-    public String showProfile(@AuthenticationPrincipal User user, Model model){
-        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername()).orElse(null);
-        model.addAttribute("profile",userServiceModel);
+    public String showProfile(@AuthenticationPrincipal User user, Model model, Principal principal) {
+        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(), principal).orElse(null);
+        model.addAttribute("profile", userServiceModel);
         return "profile";
     }
 
+    @GetMapping("/profile/{id}")
+    public String showProfileWithId(@PathVariable("id") Long id, Model model,Principal principal) {
+        UserServiceModel user = this.userService.findById(id).orElse(null);
+        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(),principal).orElse(null);
+        model.addAttribute("profile", userServiceModel);
+        return "profile";
+    }
+
+    @PreAuthorize("isOwner(#id)")
     @GetMapping("/profile/{id}/edit")
-    public String editProfile(@PathVariable Long id, Model model){
+    public String editProfile(@PathVariable Long id, Model model) {
         UserServiceModel userServiceModel = this.userService.findById(id).orElse(null);
         UserProfileUpdateBindingModel userProfileUpdateModel = modelMapper.map(userServiceModel, UserProfileUpdateBindingModel.class);
         userProfileUpdateModel.setPictureUrl(userServiceModel.getPicture().getUrl());
-        model.addAttribute("profile",userProfileUpdateModel);
+        model.addAttribute("profile", userProfileUpdateModel);
         return "edit-profile";
 
     }
 
+    @PreAuthorize("isOwner(#id)")
     @PatchMapping("/profile/{id}/edit")
     public String editProfile(@PathVariable Long id,
                               @Valid UserProfileUpdateBindingModel userProfileUpdateModel,
                               BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes
-                             ) throws IOException {
-        if (bindingResult.hasErrors()){
+                              RedirectAttributes redirectAttributes,
+                              Principal principal
+    ) throws IOException {
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("profile", userProfileUpdateModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileUpdateModel", bindingResult);
 
@@ -68,7 +82,7 @@ public class ProfileController {
     }
 
     @ModelAttribute
-    public UserProfileUpdateBindingModel userProfileUpdateModel(){
+    public UserProfileUpdateBindingModel userProfileUpdateModel() {
         return new UserProfileUpdateBindingModel();
     }
 }

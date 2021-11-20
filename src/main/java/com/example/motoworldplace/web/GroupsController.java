@@ -1,6 +1,7 @@
 package com.example.motoworldplace.web;
 
 import com.example.motoworldplace.model.binding.GroupAddBindingModel;
+import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.model.view.GroupViewModel;
 import com.example.motoworldplace.model.view.UserViewModel;
 import com.example.motoworldplace.service.GroupService;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/groups")
@@ -29,7 +31,7 @@ public class GroupsController {
     }
 
     @GetMapping("/all")
-    public String allGroups(Model model,Principal principal) {
+    public String allGroups(Model model, Principal principal) {
         model.addAttribute("groups", groupService.findAllGroup(principal));
         return "groups";
     }
@@ -43,9 +45,9 @@ public class GroupsController {
     }
 
     @GetMapping("/my")
-    public String myGroups(Model model,Principal principal){
+    public String myGroups(Model model, Principal principal) {
         List<GroupViewModel> allGroupWhichAdmin = groupService.findAllGroupWhichAdmin(principal.getName());
-        model.addAttribute("groups",allGroupWhichAdmin);
+        model.addAttribute("groups", allGroupWhichAdmin);
         return "groups";
     }
 
@@ -74,21 +76,32 @@ public class GroupsController {
     @GetMapping("/{id}/join")
     public String getJoinGroup(@PathVariable("id") Long id, Model model, Principal principal) {
         UserViewModel user = userService.findUserViewModelByUsername(principal.getName());
-        GroupViewModel group = groupService.findGroupViewModelById(id,user);
+        GroupViewModel group = groupService.findGroupViewModelById(id, user);
         model.addAttribute("user", user);
         model.addAttribute("group", group);
 
         return "request-to-member-group";
     }
 
-    @PreAuthorize("@groupServiceImpl.isMember(#principal.name,#id)")
     @PostMapping("/{id}/join")
-    public String joinGroup(@PathVariable("id") Long id,@RequestParam String otherName,Principal principal) {
-        groupService.joinMemberToGroup(id,principal.getName(),otherName);
+    public String joinGroup(@PathVariable("id") Long id, @RequestParam String otherName, Principal principal) {
+        groupService.joinMemberToGroup(id, principal.getName(), otherName);
         return "redirect:/groups/all";
     }
 
+    @PreAuthorize("isMember(#id)")
+    @GetMapping("/{id}/group")
+    public String getGroup(@PathVariable("id") Long id, Model model, Principal principal) {
+        UserViewModel user = userService.findUserViewModelByUsername(principal.getName());
+        GroupViewModel groupViewModelById = groupService.findGroupViewModelById(id, user);
+        model.addAttribute("group", groupViewModelById);
+        List<UserServiceModel> members = groupViewModelById.getMembersName().stream().map(name -> {
+            return userService.findByUsername(name,principal).get();
+        }).collect(Collectors.toList());
+        model.addAttribute("members", members);
 
+        return "group";
+    }
 
 
     @ModelAttribute

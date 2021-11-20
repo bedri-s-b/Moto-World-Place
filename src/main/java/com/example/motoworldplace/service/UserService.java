@@ -8,6 +8,7 @@ import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.model.view.UserViewModel;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Optional;
 
 public interface UserService {
@@ -17,7 +18,7 @@ public interface UserService {
 
     void initAdmin();
 
-    Optional<UserServiceModel> findByUsername(String username);
+    Optional<UserServiceModel> findByUsername(String username,Principal principal);
 
     Optional<UserServiceModel> findById(Long id);
 
@@ -30,6 +31,8 @@ public interface UserService {
     void addUser(UserEntity user, GroupEntity group);
 
     UserViewModel findUserViewModelByUsername(String name);
+
+    boolean isOwner(String username,Long id);
 
 
 }

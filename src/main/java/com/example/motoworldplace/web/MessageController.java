@@ -1,7 +1,9 @@
 package com.example.motoworldplace.web;
 
+import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.view.MessageViewModel;
 import com.example.motoworldplace.service.MessageService;
+import com.example.motoworldplace.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +20,7 @@ public class MessageController {
 
     private final MessageService messageService;
 
+
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
@@ -33,24 +36,19 @@ public class MessageController {
 
         return "all-messages";
     }
+
+
+    @PreAuthorize("isOwnerOnMessages(#id)")
     @GetMapping("/users/messages/outbox/{id}")
     public String inBoxMessage(@PathVariable Long id, Model model, Principal principal) {
-
-        if (messageService.isOwnerOnMessages(principal.getName(),id)){
-            model.addAttribute("message", messageService.findMessage(id));
-        }else {
-            throw new RuntimeException("Invalid id");
-        }
+        model.addAttribute("message", messageService.findMessage(id));
         return "outbox-message";
     }
 
+    @PreAuthorize("isOwnerOnMessages(#id)")
     @GetMapping("/users/messages/inbox/{id}")
-    public String outBoxMessage(@PathVariable Long id, Model model,Principal principal) {
-        if (messageService.isOwnerOnMessages(principal.getName(),id)){
-            model.addAttribute("message", messageService.findMessage(id));
-        }else {
-            throw new RuntimeException("Invalid id");
-        }
+    public String outBoxMessage(@PathVariable Long id, Model model, Principal principal) {
+        model.addAttribute("message", messageService.findMessage(id));
         return "inbox-message";
     }
 }

@@ -6,7 +6,6 @@ import com.example.motoworldplace.model.entity.MessageEntity;
 import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.entity.enums.CityEnum;
-import com.example.motoworldplace.model.entity.enums.GroupEnum;
 import com.example.motoworldplace.model.entity.enums.RoleEnum;
 import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.model.view.UserViewModel;
@@ -20,19 +19,19 @@ import com.example.motoworldplace.service.cluodinary.CloudinaryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_MESSAGE;
-import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_URL_PIC_GROUP;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -113,24 +112,19 @@ public class UserServiceImpl implements UserService {
         userRepository.save(admin);
     }
 
-//    @Override
-//    public UserServiceModel findByUsernameAndPassword(String username, String password) {
-//        return userRepository.findByUsernameAndPassword(username, password)
-//                .map(user -> modelMapper.map(user, UserServiceModel.class)).orElse(null);
-//    }
-
     @Override
-    public Optional<UserServiceModel> findByUsername(String username) {
+    public Optional<UserServiceModel> findByUsername(String username,Principal principal) {
         return userRepository.findByUsername(username).map(u -> {
             UserServiceModel userServiceModel = modelMapper.map(u, UserServiceModel.class);
-            userServiceModel.setCity(u.getCity().getName());
+            userServiceModel.setOwner(username.equals(principal.getName()));
             return userServiceModel;
         });
     }
 
     @Override
     public Optional<UserServiceModel> findById(Long id) {
-        return userRepository.findById(id).map(user -> modelMapper.map(user, UserServiceModel.class));
+        return userRepository.findById(id).map(userEntity -> modelMapper.map(userEntity,UserServiceModel.class));
+
     }
 
     @Override
@@ -179,6 +173,11 @@ public class UserServiceImpl implements UserService {
         UserViewModel userViewModel = modelMapper.map(userEntity, UserViewModel.class);
         userViewModel.getGroups().addAll(userEntity.getGroup().stream().map(GroupEntity::getName).collect(Collectors.toSet()));
         return userViewModel;
+    }
+
+    @Override
+    public boolean isOwner(String username,Long id) {
+        return userRepository.findById(id).get().getUsername().equals(username);
     }
 
 

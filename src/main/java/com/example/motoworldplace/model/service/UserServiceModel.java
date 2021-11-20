@@ -20,6 +20,7 @@ public class UserServiceModel {
     private PictureEntity picture;
     private Set<GroupEntity> group = new HashSet<>();
     private Set<MessageEntity> receivedMessages = new HashSet<>();
+    private boolean isOwner;
 
     public UserServiceModel() {
     }
@@ -111,6 +112,15 @@ public class UserServiceModel {
 
     public UserServiceModel setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public UserServiceModel setOwner(boolean owner) {
+        isOwner = owner;
         return this;
     }
 }
