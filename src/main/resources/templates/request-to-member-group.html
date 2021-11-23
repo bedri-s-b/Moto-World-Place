@@ -20,42 +20,49 @@
                 th:object="${user}"
                 th:method="POST"
                 th:action="@{/groups/{id}/join(id = ${group.id})}"
-                class="row mb-2"
-        >
+                class="row mb-2 justify-content-center">
 
-            <div class="col-md-4">
-                <div class="card flex-md-row bg-danger mb-4  h-md-250">
-                    <div class="card-body d-flex flex-column align-items-start">
-                        <strong class="d-inline-block mb-2 text-primary" th:text="*{username}">Attacker</strong>
-                        <h3 class="mb-0 text-white" th:text="*{fullName} + ' your groups is:'">
-                            Your groups is:
-                        </h3>
-                        <li class="mb-1 text-white" th:each="g : *{getGroups()}" th:text="${g}"></li>
+                <div class="col-5">
+                    <div class="card flex-md-row bg-danger mb-4  h-md-250">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <strong class="d-inline-block mb-2 text-primary" th:text="*{username}">Attacker</strong>
+                            <h3 class="mb-0 text-white" th:text="*{fullName} + ' your groups is:'">
+                                Your groups is:
+                            </h3>
+                            <li class="mb-1 text-white" th:each="g : *{getGroups()}" th:text="${g}"></li>
+                        </div>
+                        <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
+                             style="width: 200px; height: 250px;"
+                             th:src="*{picture}"
+                             data-holder-rendered="true">
                     </div>
-                    <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
-                         style="width: 200px; height: 250px;"
-                         th:src="*{picture.getUrl()}"
-                         data-holder-rendered="true">
                 </div>
-            </div>
-            <div class="col-md-4" th:object="${group}">
-                <div class="bg-danger card flex-md-row mb-4 box-shadow h-md-250">
-                    <div class="card-body d-flex flex-column align-items-start">
-                        <strong class="d-inline-block mb-2 text-info" th:text="*{name.toUpperCase()}">Defender</strong>
-                        <h3 class="mb-0 text-white" th:text="'Members in ' + *{name}"></h3>
-                        <li class="mb-1 text-white" th:each="m : *{membersName}" th:text="${m}"></li>
-                        <select name="otherName" class="form-select mt-5" aria-label="Default select example">
-                            <option th:each="m : *{membersName}" th:value="${m}" th:text="${m}"></option>
+                <div class="col-5" th:object="${group}">
+                    <div class="bg-danger card flex-md-row mb-4 box-shadow h-md-250">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <strong class="d-inline-block mb-2 text-info"
+                                    th:text="*{name.toUpperCase()}">Defender</strong>
+                            <h3 class="mb-0 text-white" th:text="'Members in ' + *{name}"></h3>
+                            <li class="mb-1 text-white" th:each="m : *{membersName}" th:text="${m}"></li>
+                            <select name="otherName" class="form-select mt-5" aria-label="Default select example">
+                                <option th:each="m : *{membersName}" th:value="${m}" th:text="${m}"></option>
 
-                        </select>
+                            </select>
+                        </div>
+                        <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
+
+                             th:src="*{picture}"
+                             data-holder-rendered="true" style="width: 200px; height: 250px;">
                     </div>
-                    <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
 
-                         th:src="*{picture}"
-                         data-holder-rendered="true" style="width: 200px; height: 250px;">
                 </div>
-            </div>
-            <button type="submit" class="col-md-4 mx-auto btn btn-success btn-lg btn-block mt-5 mb-5">JOIN !!!</button>
+
+                <div class="col-4">
+                    <button type="submit" class="btn-success btn-lg btn-block ">JOIN !!!</button>
+                </div>
+
+
+
         </form>
 
     </div>

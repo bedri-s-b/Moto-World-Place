@@ -3,13 +3,16 @@ package com.example.motoworldplace.model.binding;
 import com.example.motoworldplace.model.entity.enums.CityEnum;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 
 public class UserProfileUpdateBindingModel {
 
     private Long id;
     private MultipartFile picture;
-    private String pictureUrl;
+//    private String pictureUrl;
     private String fullName;
     private CityEnum city;
     private String username;
@@ -37,15 +40,17 @@ public class UserProfileUpdateBindingModel {
         return this;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
+//    public String getPictureUrl() {
+//        return pictureUrl;
+//    }
+//
+//    public UserProfileUpdateBindingModel setPictureUrl(String pictureUrl) {
+//        this.pictureUrl = pictureUrl;
+//        return this;
+//    }
 
-    public UserProfileUpdateBindingModel setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-        return this;
-    }
-
+    @NotNull
+    @Size(min = 5,max = 20)
     public String getFullName() {
         return fullName;
     }
@@ -73,6 +78,8 @@ public class UserProfileUpdateBindingModel {
         return this;
     }
 
+    @Email
+    @NotNull
     public String getEmail() {
         return email;
     }

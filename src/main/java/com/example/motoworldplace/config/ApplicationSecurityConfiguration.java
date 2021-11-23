@@ -28,7 +28,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 //достъпно за всички.....
-                .antMatchers("/","/home","/users/login","/users/register").permitAll()
+                .antMatchers("/","/home","/users/login","/users/register","/products/**").permitAll()
                 //достъп за останалите
                 .antMatchers("/**").authenticated()
 
@@ -46,7 +46,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 // как да се извърши логаут
                 .logout()
                 .logoutUrl("/users/logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/products/all")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
 

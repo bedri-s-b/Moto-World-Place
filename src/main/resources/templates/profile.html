@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    ->
+
                 </div>
                 <div class="col-md-8">
                     <div class="card mb-3">
@@ -75,7 +75,7 @@
 
                                     <th:block th:if="*{!isOwner()}">
                                         <a class="btn btn-info " target="__blank"
-                                           th:href="@{/users/profile/{id}/edit(id = *{getId()})}">Message</a>
+                                           th:href="@{/users/message/{id}/send(id = *{getId()})}">Message</a>
                                     </th:block>
 
 

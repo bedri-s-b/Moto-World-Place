@@ -2,6 +2,7 @@ package com.example.motoworldplace.service.impl;
 
 import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.repository.PictureRepository;
+import com.example.motoworldplace.repository.UserRepository;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.cluodinary.CloudinaryImg;
 import com.example.motoworldplace.service.cluodinary.CloudinaryService;
@@ -18,12 +19,14 @@ public class PictureServiceImpl implements PictureService {
 
     private final PictureRepository pictureRepository;
     private final CloudinaryService cloudinaryService;
+    private final UserRepository userRepository;
 
 
-    public PictureServiceImpl(PictureRepository pictureRepository, CloudinaryService cloudinaryService) {
+    public PictureServiceImpl(PictureRepository pictureRepository, CloudinaryService cloudinaryService, UserRepository userRepository) {
         this.pictureRepository = pictureRepository;
         this.cloudinaryService = cloudinaryService;
 
+        this.userRepository = userRepository;
     }
 
 
@@ -73,6 +76,11 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public void savePicture(PictureEntity picture) {
         pictureRepository.saveAndFlush(picture);
+    }
+
+    @Override
+    public String findPictureUrlByUserId(Long id) {
+        return userRepository.findById(id).get().getPicture().getUrl();
     }
 
 

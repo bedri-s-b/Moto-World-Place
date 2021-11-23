@@ -23,11 +23,10 @@
 
 
                     <div
-                         class="card mb-4 box-shadow" th:text="*{getMessage()}">
+                            class="card mb-4 box-shadow" th:text="*{getMessage()}">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis sequi animi ea perspiciatis
                         dolores optio fugit laboriosam sed accusamus eos quas non, pariatur recusandae atque voluptates
                         libero vero fuga reiciendis?
-
 
 
                     </div>
@@ -35,11 +34,13 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a type="button" class="btn btn-sm btn-outline-secondary"
-                                   th:href="@{/users/messages/{id} (id=*{id})}"
-                                >Delete</a>
+                                <form class="btn btn-sm btn-outline-secondary"
+                                      th:method="delete"
+                                      th:action="@{/users/messages/outbox/{id} (id=*{id})}">
+                                    <input type="submit" class="btn btn-link" value="Delete"/>
+                                </form>
                             </div>
-                            <small class="text-muted" th:text="*{getTime()}">1000 copies</small>
+                            <small class="text-muted" th:text="*{getTime()}"></small>
                         </div>
 
                     </div>
@@ -52,15 +53,8 @@
 </main>
 
 
-<footer class="footer bg-blur rounded" id="test">
-    <!-- Grid container -->
+<footer th:replace="fragments/footer :: footer"></footer>
 
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2021 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-</footer>
 
 </body>
 </html>

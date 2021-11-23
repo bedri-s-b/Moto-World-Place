@@ -13,7 +13,13 @@ public interface MessageService {
 
     List<MessageViewModel> getAllMessagesToUser(String username);
 
-    MessageViewModel findMessage(Long id);
+    MessageViewModel findMessageOut(Long id);
 
     boolean isOwnerOnMessages(String username,Long id);
+
+    void deleteMessage(Long id);
+
+    void saveThisMessage(Long toUserId, String currentUserName,String message);
+
+    MessageViewModel findMessageIn(Long id);
 }

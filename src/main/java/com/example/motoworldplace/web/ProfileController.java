@@ -43,9 +43,9 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/{id}")
-    public String showProfileWithId(@PathVariable("id") Long id, Model model,Principal principal) {
+    public String showProfileWithId(@PathVariable("id") Long id, Model model, Principal principal) {
         UserServiceModel user = this.userService.findById(id).orElse(null);
-        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(),principal).orElse(null);
+        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(), principal).orElse(null);
         model.addAttribute("profile", userServiceModel);
         return "profile";
     }
@@ -53,33 +53,40 @@ public class ProfileController {
     @PreAuthorize("isOwner(#id)")
     @GetMapping("/profile/{id}/edit")
     public String editProfile(@PathVariable Long id, Model model) {
+
         UserServiceModel userServiceModel = this.userService.findById(id).orElse(null);
-        UserProfileUpdateBindingModel userProfileUpdateModel = modelMapper.map(userServiceModel, UserProfileUpdateBindingModel.class);
-        userProfileUpdateModel.setPictureUrl(userServiceModel.getPicture().getUrl());
-        model.addAttribute("profile", userProfileUpdateModel);
+        UserProfileUpdateBindingModel userProfileUpdateBindingModel = modelMapper.map(userServiceModel, UserProfileUpdateBindingModel.class);
+        model.addAttribute("userProfileUpdateBindingModel", userProfileUpdateBindingModel);
+        model.addAttribute("picUrl", pictureService.findPictureUrlByUserId(id));
         return "edit-profile";
 
+    }
+
+    @GetMapping("/profile/{id}/edit/errors")
+    public String editProfileError(@PathVariable Long id,Model model) {
+        model.addAttribute("picUrl", pictureService.findPictureUrlByUserId(id));
+        return "edit-profile";
     }
 
     @PreAuthorize("isOwner(#id)")
     @PatchMapping("/profile/{id}/edit")
     public String editProfile(@PathVariable Long id,
-                              @Valid UserProfileUpdateBindingModel userProfileUpdateModel,
+                              @Valid UserProfileUpdateBindingModel userProfileUpdateBindingModel,
                               BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes,
-                              Principal principal
-    ) throws IOException {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("profile", userProfileUpdateModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileUpdateModel", bindingResult);
+                              RedirectAttributes redirectAttributes) throws IOException {
 
-            return "redirect:editProfile";
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userProfileUpdateBindingModel", userProfileUpdateBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userProfileUpdateBindingModel", bindingResult);
+
+            return "redirect:/users/profile/" + id + "/edit/errors";
         }
 
-        userService.editProfile(userProfileUpdateModel);
+        userService.editProfile(userProfileUpdateBindingModel);
 
         return "redirect:/users/profile";
     }
+
 
     @ModelAttribute
     public UserProfileUpdateBindingModel userProfileUpdateModel() {

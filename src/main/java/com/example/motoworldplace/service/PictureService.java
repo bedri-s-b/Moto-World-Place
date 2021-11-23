@@ -25,4 +25,6 @@ public interface PictureService {
     void delete(PictureEntity picture);
 
     void savePicture(PictureEntity picture);
+
+    String findPictureUrlByUserId(Long id);
 }

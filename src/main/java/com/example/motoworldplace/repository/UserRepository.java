@@ -26,4 +26,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     void changePicture(@Param("userId") Long userId,
                        @Param("byPublicId") PictureEntity byPublicId);
 
+
+
+
 }

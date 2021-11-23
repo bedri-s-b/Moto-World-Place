@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "offers")
-public class OfferEntity extends BaseEntity{
+@Table(name = "products")
+public class ProductEntity extends BaseEntity{
 
     private String description;
     private TypeEnum type;
@@ -24,7 +24,7 @@ public class OfferEntity extends BaseEntity{
         return description;
     }
 
-    public OfferEntity setDescription(String description) {
+    public ProductEntity setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -33,7 +33,7 @@ public class OfferEntity extends BaseEntity{
         return type;
     }
 
-    public OfferEntity setType(TypeEnum type) {
+    public ProductEntity setType(TypeEnum type) {
         this.type = type;
         return this;
     }
@@ -43,7 +43,7 @@ public class OfferEntity extends BaseEntity{
         return seller;
     }
 
-    public OfferEntity setSeller(UserEntity seller) {
+    public ProductEntity setSeller(UserEntity seller) {
         this.seller = seller;
         return this;
     }
@@ -52,18 +52,18 @@ public class OfferEntity extends BaseEntity{
         return price;
     }
 
-    public OfferEntity setPrice(BigDecimal price) {
+    public ProductEntity setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
 
 
-    @OneToMany()
+    @OneToMany(mappedBy = "offer")
     public Set<PictureEntity> getPicturesUrl() {
         return picturesUrl;
     }
 
-    public OfferEntity setPicturesUrl(Set<PictureEntity> picturesUrl) {
+    public ProductEntity setPicturesUrl(Set<PictureEntity> picturesUrl) {
         this.picturesUrl = picturesUrl;
         return this;
     }

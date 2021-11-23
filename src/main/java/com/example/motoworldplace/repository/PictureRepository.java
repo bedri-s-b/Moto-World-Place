@@ -20,4 +20,6 @@ public interface PictureRepository extends JpaRepository<PictureEntity, Long> {
     @Transactional
     boolean deleteByPublicId(String publicId);
 
+
+
 }

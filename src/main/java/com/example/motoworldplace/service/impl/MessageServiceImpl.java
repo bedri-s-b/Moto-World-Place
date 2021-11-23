@@ -2,14 +2,16 @@ package com.example.motoworldplace.service.impl;
 
 import com.example.motoworldplace.model.entity.BaseEntity;
 import com.example.motoworldplace.model.entity.MessageEntity;
+import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.view.MessageViewModel;
 import com.example.motoworldplace.repository.MessageRepository;
+import com.example.motoworldplace.repository.UserRepository;
 import com.example.motoworldplace.service.MessageService;
+import com.example.motoworldplace.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +20,12 @@ import java.util.stream.Collectors;
 public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
-    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper) {
+    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper, UserRepository userRepository) {
         this.messageRepository = messageRepository;
         this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public MessageViewModel findMessage(Long id) {
+    public MessageViewModel findMessageOut(Long id) {
         return messageRepository.findById(id).
                 map(message -> {
                     message.setReadMessage(true);
@@ -78,5 +82,28 @@ public class MessageServiceImpl implements MessageService {
         collect.addAll(byUserSend);
 
         return collect.contains(id);
+    }
+
+    @Override
+    public void deleteMessage(Long id) {
+        messageRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveThisMessage(Long toUserId, String currentUserName, String message) {
+        UserEntity toUser = userRepository.findById(toUserId).orElseThrow();
+        UserEntity fromUser = userRepository.findByUsername(currentUserName).orElseThrow();
+        MessageEntity messageEntity = new MessageEntity()
+                .setReadMessage(false)
+                .setMessage(message)
+                .setFromUser(fromUser)
+                .setToUser(toUser);
+        messageRepository.save(messageEntity);
+    }
+
+    @Override
+    public MessageViewModel findMessageIn(Long id) {
+        return messageRepository.findById(id).
+                map(message -> modelMapper.map(message, MessageViewModel.class)).orElseThrow();
     }
 }

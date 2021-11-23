@@ -25,5 +25,6 @@ public class DatabaseInit implements CommandLineRunner {
         cityService.initCities();
         userService.initAdmin();
         groupService.initGroup();
+        System.out.println("");
     }
 }
