@@ -1,14 +1,16 @@
-$('#products').onclick(() =>{
-    reloadProducts()
+$('#loadMessages').onload(() =>{
+    readMessages()
 });
 
-function  reloadProducts(){
+function  readMessages(){
+    $("#mainLi").empty()
 
-    fetch("http://localhost:8000/products/all/rest")
+    fetch("http://localhost:8000/users/messages/rest/all")
         .then(response => response.json())
-        .then(json => json.forEach(product =>{
-            let result = '<p>' + product.id +'</p>';
+        .then(json => json.forEach(message =>{
+            let dive =
 
-            $("#parent-div-products").append(result);
-        }))
+
+            $("#mainLi").append(dive);
+        }));
 }

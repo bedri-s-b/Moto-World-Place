@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+<main>
+
+    <form th:method="post"
+          th:action="@{/products/add}"
+          th:object="${productBindingModel}"
+          enctype="multipart/form-data"
+            class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center container">
+
+        <div class="row ">
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="brand" class="text-white font-weight-bold">Brand</label>
+                <input th:field="*{brand}" th:errorclass="is-invalid"
+                        name="brand" id="brand" type="text" class="form-control"
+                       placeholder="Model"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Motorcycle brand is required.
+                </p>
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label class="text-center text-white font-weight-bold" for="model">Model</label>
+
+                <input th:field="*{model}" th:errorclass="is-invalid"
+                        name="model" id="model" type="text" class="form-control"
+                       placeholder="Model"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Motorcycle model is required.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="row ">
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="brand" class="text-white font-weight-bold">Type</label>
+                <select th:field="*{type}" th:errorclass="is-invalid"
+                        id="type" name="type" class="form-control">
+                    <option th:each="t : ${T(com.example.motoworldplace.model.entity.enums.TypeEnum).values()}"
+                            th:text="${t.name()}" th:value="${t}">Type
+                    </option>
+                </select>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Motorcycle type is required.
+                </p>
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label class="text-center text-white font-weight-bold" for="model">Power in Hp</label>
+
+                <input th:field="*{powerHp}" th:errorclass="is-invalid"
+                        name="power" id="power" type="number" min="0" class="form-control"
+                       placeholder="100"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Motorcycle power is required.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="kilometers" class="text-white font-weight-bold">Kilometers</label>
+                <input th:field="*{kilometers}" th:errorclass="is-invalid"
+                        name="kilometers" id="kilometers" type="number" class="form-control"
+                       placeholder="10000"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Kilometers is required.
+                </p>
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="price" class="text-white font-weight-bold">Price</label>
+                <input th:field="*{price}" th:errorclass="is-invalid"
+                        name="price" id="price" type="number" class="form-control"
+                       placeholder="price"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Price is required.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="year" class="text-white font-weight-bold">Year</label>
+                <input th:field="*{year}" th:errorclass="is-invalid"
+                        name="year" id="year" type="number" class="form-control"
+                       placeholder="2008"/>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Year is required.
+                </p>
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="price" class="text-white font-weight-bold">Price</label>
+                <input th:field="*{phoneNumber}" th:errorclass="is-invalid"
+                        name="phoneNumber" id="phoneNumber" type="text" class="form-control"
+                       placeholder="+3590000000"/>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <label class="text-white font-weight-bold" for="description">Description</label>
+            <textarea th:field="*{description}" th:errorclass="is-invalid"
+                    name="description" id="description"
+                      type="textarea" class="form-control" rows="3" placeholder="Description"></textarea>
+            <p class="errors alert alert-danger invalid-feedback">
+                Description is required.
+            </p>
+        </div>
+
+
+        <div class="row ">
+            <div class="form-group">
+                <label for="exampleFormControlFile1"></label>
+                <input name="picture1" type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="form-group">
+                <label for="exampleFormControlFile1"></label>
+                <input name="picture2" type="file" class="form-control-file" id="exampleFormControlFile2">
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="form-group">
+                <label for="exampleFormControlFile1"></label>
+                <input name="picture3" type="file" class="form-control-file" id="exampleFormControlFile3">
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="form-group">
+                <label for="exampleFormControlFile1"></label>
+                <input name="picture4" type="file" class="form-control-file" id="exampleFormControlFile4">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info btn-lg" value="Submit Offer"/>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</main>
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+
+</html>

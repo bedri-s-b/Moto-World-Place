@@ -2,10 +2,9 @@ package com.example.motoworldplace.model.entity;
 
 import com.example.motoworldplace.model.entity.enums.TypeEnum;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,11 +13,17 @@ import java.util.Set;
 @Table(name = "products")
 public class ProductEntity extends BaseEntity{
 
-    private String description;
+    private String brand;
+    private String model;
     private TypeEnum type;
+    private Integer powerHp;
+    private Integer kilometers;
     private BigDecimal price;
-    private Set<PictureEntity> picturesUrl = new HashSet<>();
+    private Integer year;
+    private String phoneNumber;
     private UserEntity seller;
+    private String description;
+    private Set<PictureEntity> pictures = new HashSet<>();
 
     public String getDescription() {
         return description;
@@ -29,6 +34,8 @@ public class ProductEntity extends BaseEntity{
         return this;
     }
 
+
+    @Enumerated(EnumType.STRING)
     public TypeEnum getType() {
         return type;
     }
@@ -48,6 +55,7 @@ public class ProductEntity extends BaseEntity{
         return this;
     }
 
+    @Column(nullable = false)
     public BigDecimal getPrice() {
         return price;
     }
@@ -58,13 +66,71 @@ public class ProductEntity extends BaseEntity{
     }
 
 
-    @OneToMany(mappedBy = "offer")
-    public Set<PictureEntity> getPicturesUrl() {
-        return picturesUrl;
+    @OneToMany(mappedBy = "product")
+    public Set<PictureEntity> getPictures() {
+        return pictures;
     }
 
-    public ProductEntity setPicturesUrl(Set<PictureEntity> picturesUrl) {
-        this.picturesUrl = picturesUrl;
+    public ProductEntity setPictures(Set<PictureEntity> picturesUrl) {
+        this.pictures = picturesUrl;
+        return this;
+    }
+
+   @Column(nullable = false)
+    public Integer getKilometers() {
+        return kilometers;
+    }
+
+    public ProductEntity setKilometers(Integer kilometers) {
+        this.kilometers = kilometers;
+        return this;
+    }
+
+    @Column(nullable = false)
+    public Integer getYear() {
+        return year;
+    }
+
+    public ProductEntity setYear(Integer year) {
+        this.year = year;
+        return this;
+    }
+
+    public Integer getPowerHp() {
+        return powerHp;
+    }
+
+    public ProductEntity setPowerHp(Integer powerHp) {
+        this.powerHp = powerHp;
+        return this;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public ProductEntity setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    @Column(nullable = false)
+    public String getModel() {
+        return model;
+    }
+
+    public ProductEntity setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    @Column(nullable = false)
+    public String getBrand() {
+        return brand;
+    }
+
+    public ProductEntity setBrand(String brand) {
+        this.brand = brand;
         return this;
     }
 }

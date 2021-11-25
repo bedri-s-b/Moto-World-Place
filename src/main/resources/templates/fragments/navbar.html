@@ -25,6 +25,11 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" sec:authorize="isAuthenticated()"
+                   th:href="@{/products/add}">ADD PRODUCTS</a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" th:href="@{/products/all}">PRODUCTS</a>
             </li>
 

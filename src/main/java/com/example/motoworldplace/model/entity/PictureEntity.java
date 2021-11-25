@@ -14,7 +14,7 @@ public class PictureEntity extends BaseEntity{
     //
 
     private GroupEntity group;
-    private ProductEntity offer;
+    private ProductEntity product;
 
     public String getUrl() {
         return url;
@@ -46,12 +46,12 @@ public class PictureEntity extends BaseEntity{
     }
 
     @ManyToOne
-    public ProductEntity getOffer() {
-        return offer;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public PictureEntity setOffer(ProductEntity offer) {
-        this.offer = offer;
+    public PictureEntity setProduct(ProductEntity product) {
+        this.product = product;
         return this;
     }
 }

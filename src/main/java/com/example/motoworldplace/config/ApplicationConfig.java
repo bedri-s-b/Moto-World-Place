@@ -10,14 +10,14 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Configuration
 public class ApplicationConfig {
@@ -26,6 +26,7 @@ public class ApplicationConfig {
     public ApplicationConfig(CloudinaryConfig cloudinaryConfig) {
         this.cloudinaryConfig = cloudinaryConfig;
     }
+
 
     @Bean
     public ModelMapper modelMapper(){
@@ -62,10 +63,20 @@ public class ApplicationConfig {
             }
         };
 
+        Converter<Set<PictureEntity>,Set<String>> converter4 = new Converter<Set<PictureEntity>, Set<String>>() {
+            @Override
+            public Set<String> convert(MappingContext<Set<PictureEntity>, Set<String>> mappingContext) {
+                Set<PictureEntity> source = mappingContext.getSource();
+               return source.stream().map(PictureEntity::getUrl).collect(Collectors.toSet());
+            }
+        };
+
+
         modelMapper.addConverter(converter);
         modelMapper.addConverter(converter1);
         modelMapper.addConverter(converter2);
         modelMapper.addConverter(converter3);
+        modelMapper.addConverter(converter4);
         return modelMapper;
     };
 
