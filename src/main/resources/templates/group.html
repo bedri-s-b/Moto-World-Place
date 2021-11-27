@@ -23,7 +23,7 @@
                 <hr>
                 <div class="justify-content-center" th:each="m : ${members}" >
                     <a th:href="@{/users/profile/{id}(id = ${m.getId()})}" th:text="${m.getFullName()}">Member 1</a>
-                    <img th:src="${m.getPicture().getUrl()}"
+                    <img th:src="${m.getPicture()}"
                          alt="profile-pic" class="rounded-circle" width="150">
                     <hr>
                 </div>

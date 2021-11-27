@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductsViewModel> findAllProductsViewModel() {
         List<ProductEntity> all = productRepository.findAll();
-        return all.stream().map(productEntity -> modelMapper.map(productEntity, ProductsViewModel.class)).collect(Collectors.toList());
+        return all.stream().map(this::mapPVM).collect(Collectors.toList());
     }
 
     @Override
@@ -57,6 +58,13 @@ public class ProductServiceImpl implements ProductService {
                 });
     }
 
+    @Transactional
+    @Override
+    public ProductsViewModel findProductById(Long id) {
+        ProductEntity product = productRepository.findByCurrentId(id);
+        return mapPVM(product);
+    }
+
     private ProductEntity map(ProductBindingModel pbm) {
 
         return new ProductEntity()
@@ -70,5 +78,24 @@ public class ProductServiceImpl implements ProductService {
                 .setType(pbm.getType())
                 .setPrice(pbm.getPrice())
                 .setYear(pbm.getYear());
+    }
+
+    private ProductsViewModel mapPVM(ProductEntity productEntity){
+        return new ProductsViewModel()
+                .setModel(productEntity.getModel())
+                .setBrand(productEntity.getBrand())
+                .setDescription(productEntity.getDescription())
+                .setKilometers(productEntity.getKilometers())
+                .setPrice(productEntity.getPrice())
+                .setPhoneNumber(productEntity.getPhoneNumber())
+                .setId(productEntity.getId())
+                .setPictures(productEntity.getPictures().stream().map(PictureEntity::getUrl).collect(Collectors.toSet()))
+                .setType(productEntity.getType())
+                .setModel(productEntity.getModel())
+                .setPowerHp(productEntity.getPowerHp())
+                .setYear(productEntity.getYear())
+                .setSeller(productEntity.getSeller().getFullName())
+                .setDescription(productEntity.getDescription())
+                .setCreated(productEntity.getCreated().format(DateTimeFormatter.ofPattern("dd MMM uuuu HH:mm")));
     }
 }

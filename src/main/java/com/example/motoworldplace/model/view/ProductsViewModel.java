@@ -5,6 +5,7 @@ import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.entity.enums.TypeEnum;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +20,10 @@ public class ProductsViewModel {
     private BigDecimal price;
     private Integer year;
     private String phoneNumber;
-    private UserEntity seller;
+    private String seller;
     private String description;
     private Set<String> pictures = new HashSet<>();
+    private String created;
 
     public String getBrand() {
         return brand;
@@ -95,14 +97,6 @@ public class ProductsViewModel {
         return this;
     }
 
-    public UserEntity getSeller() {
-        return seller;
-    }
-
-    public ProductsViewModel setSeller(UserEntity seller) {
-        this.seller = seller;
-        return this;
-    }
 
     public String getDescription() {
         return description;
@@ -128,6 +122,24 @@ public class ProductsViewModel {
 
     public ProductsViewModel setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public ProductsViewModel setSeller(String seller) {
+        this.seller = seller;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public ProductsViewModel setCreated(String created) {
+        this.created = created;
         return this;
     }
 }

@@ -2,7 +2,6 @@ package com.example.motoworldplace.service;
 
 import com.example.motoworldplace.model.binding.UserProfileUpdateBindingModel;
 import com.example.motoworldplace.model.entity.GroupEntity;
-import com.example.motoworldplace.model.entity.MessageEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.model.view.UserViewModel;
@@ -18,7 +17,7 @@ public interface UserService {
 
     void initAdmin();
 
-    Optional<UserServiceModel> findByUsername(String username,Principal principal);
+    Optional<UserServiceModel> findByUsername(String username, Principal principal);
 
     Optional<UserServiceModel> findById(Long id);
 

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class ProductEntity extends BaseEntity{
     private UserEntity seller;
     private String description;
     private Set<PictureEntity> pictures = new HashSet<>();
+    private LocalDateTime created;
 
     public String getDescription() {
         return description;
@@ -132,5 +134,19 @@ public class ProductEntity extends BaseEntity{
     public ProductEntity setBrand(String brand) {
         this.brand = brand;
         return this;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public ProductEntity setCreated(LocalDateTime created) {
+        this.created = created;
+        return this;
+    }
+
+    @PrePersist
+    private void setCreated(){
+        setCreated(LocalDateTime.now());
     }
 }

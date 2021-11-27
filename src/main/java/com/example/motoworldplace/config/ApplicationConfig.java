@@ -2,9 +2,13 @@ package com.example.motoworldplace.config;
 
 import com.cloudinary.Cloudinary;
 import com.example.motoworldplace.model.entity.CityEntity;
+import com.example.motoworldplace.model.entity.GroupEntity;
 import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.entity.enums.CityEnum;
+import com.example.motoworldplace.model.view.GroupViewModel;
+import com.example.motoworldplace.model.view.UserViewModel;
+import com.example.motoworldplace.repository.PictureRepository;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
@@ -22,9 +26,11 @@ import java.util.stream.Collectors;
 @Configuration
 public class ApplicationConfig {
     private final CloudinaryConfig cloudinaryConfig;
+    private final PictureRepository pictureRepository;
 
-    public ApplicationConfig(CloudinaryConfig cloudinaryConfig) {
+    public ApplicationConfig(CloudinaryConfig cloudinaryConfig, PictureRepository pictureRepository) {
         this.cloudinaryConfig = cloudinaryConfig;
+        this.pictureRepository = pictureRepository;
     }
 
 
@@ -71,12 +77,23 @@ public class ApplicationConfig {
             }
         };
 
+       Converter<Set<GroupEntity>,Set<String>> converter5 = new Converter<Set<GroupEntity>, Set<String>>() {
+           @Override
+           public Set<String> convert(MappingContext<Set<GroupEntity>, Set<String>> mappingContext) {
+               Set<GroupEntity> source = mappingContext.getSource();
+               return source.stream().map(GroupEntity::getName).collect(Collectors.toSet());
+           }
+       };
+
+
+
 
         modelMapper.addConverter(converter);
         modelMapper.addConverter(converter1);
         modelMapper.addConverter(converter2);
         modelMapper.addConverter(converter3);
         modelMapper.addConverter(converter4);
+        modelMapper.addConverter(converter5);
         return modelMapper;
     };
 

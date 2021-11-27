@@ -17,25 +17,19 @@
 
             <ul class="offer-details list-group list-group-flush">
                 <div class="card-img-top-wrapper">
-                    <img class="card-img-top" th:src="*{pictures.toArray()[0]}" alt="Car image">
+                  <img class="card-img-top" th:src="*{pictures.toArray()[0]}" alt="Car image">
                 </div>
-                <li class="list-group-item">
+
+
+
+
                 <li class="list-group-item"><h5 class="text-primary">brand:</h5><span th:text="*{brand}">brand</span>
                 </li>
                 <li class="list-group-item"><h5 class="text-primary">model:</h5><span th:text="*{model}">model</span>
                 </li>
-                <li class="list-group-item"><h5 class="text-primary">type:</h5><span th:text="*{type}">Type</span></li>
-                <li class="list-group-item"><h5 class="text-primary">powerHp:</h5><span
-                        th:text="*{powerHp}">powerHp</span>
-                </li>
+
                 <li class="list-group-item"><h5 class="text-primary">price:</h5><span th:text="*{price}">Price</span>
-                </li>
-                <li class="list-group-item"><h5 class="text-primary">phoneNumber:</h5><span
-                        th:text="*{phoneNumber}">Price</span></li>
-                <li class="list-group-item"><h5 class="text-primary">kilometers:</h5><span
-                        th:text="*{kilometers}">Price</span></li>
-                <li class="list-group-item"><h5 class="text-primary">description:</h5> <span
-                        th:text="*{description}">Price</span></li>
+
 
                 <li class="list-group-item h3 "><a class="card-link"
                                                th:href="@{/products/{id}/details(id=*{id})}">Details</a>

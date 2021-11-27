@@ -10,10 +10,6 @@ public class PictureEntity extends BaseEntity{
 
     private String url;
     private String publicId;
-
-    //
-
-    private GroupEntity group;
     private ProductEntity product;
 
     public String getUrl() {
@@ -34,16 +30,6 @@ public class PictureEntity extends BaseEntity{
         return this;
     }
 
-    //
-    @ManyToOne
-    public GroupEntity getGroup() {
-        return group;
-    }
-
-    public PictureEntity setGroup(GroupEntity group) {
-        this.group = group;
-        return this;
-    }
 
     @ManyToOne
     public ProductEntity getProduct() {

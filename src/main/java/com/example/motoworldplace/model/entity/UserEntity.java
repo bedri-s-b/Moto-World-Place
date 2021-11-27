@@ -17,7 +17,7 @@ public class UserEntity extends BaseEntity {
     private Integer age;
     private CityEntity city;
     private PictureEntity picture;
-    private Set<GroupEntity> group = new HashSet<>();
+    private Set<GroupEntity> groups = new HashSet<>();
     private RoleEnum groupEnum;
     private RoleEnum role;
 
@@ -56,12 +56,12 @@ public class UserEntity extends BaseEntity {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    public Set<GroupEntity> getGroup() {
-        return group;
+    public Set<GroupEntity> getGroups() {
+        return groups;
     }
 
-    public UserEntity setGroup(Set<GroupEntity> group) {
-        this.group = group;
+    public UserEntity setGroups(Set<GroupEntity> group) {
+        this.groups = group;
         return this;
     }
 

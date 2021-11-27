@@ -25,7 +25,6 @@ html, body {
 footer {
     background-color: #8c0c19;
     display: table-footer-group;
-    /* height: 0; */
 
 }
 
@@ -33,7 +32,7 @@ footer {
 
 .container{
     border: solid #8c0c19;
-    border-radius: 20%;
+    border-radius: 1%;
     background:rgba(187, 186, 182, 0.7);
     display: flex;
     justify-content: center;

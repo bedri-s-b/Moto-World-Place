@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.motoworldplace.constans.ConstantsUrl.DEFAULT_MESSAGE_GROUP;
@@ -76,18 +75,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupServiceModel addGroup(GroupAddBindingModel groupAddBindingModel, String username) throws IOException {
+    public void addGroup(GroupAddBindingModel groupAddBindingModel, String username) throws IOException {
+
+        GroupEntity groupEntity = modelMapper.map(groupAddBindingModel, GroupEntity.class);
         UserEntity currentUser = userService.findByUserName(username);
-        currentUser.setGroupEnum(RoleEnum.GROUP_ADMIN);
-        GroupEntity group = modelMapper.map(groupAddBindingModel, GroupEntity.class);
-        group.setAdmin(currentUser);
-        group.getMembers().add(currentUser);
-        CloudinaryImg upload = cloudinaryService.upload(groupAddBindingModel.getPicture());
-        PictureEntity picture = new PictureEntity().setPublicId(upload.getPublicId()).setUrl(upload.getUrl());
-        pictureService.savePicture(picture);
-        group.setPicture(picture);
-        GroupEntity save = groupRepository.save(group);
-        currentUser.getGroup().add(save);
+        groupEntity.setAdmin(currentUser);
+        groupEntity.getMembers().add(currentUser);
+        String newPicture = pictureService.createNewPicture(groupAddBindingModel.getPicture(), currentUser.getId());
+        PictureEntity currentPicture = pictureService.findByPublicId(newPicture);
+        groupEntity.setPicture(currentPicture);
+        GroupEntity saveGroup = groupRepository.save(groupEntity);
+        currentUser.getGroups().add(saveGroup);
         userRepository.save(currentUser);
 
         UserDetails principal = motoWorldUserService.loadUserByUsername(currentUser.getUsername());
@@ -97,13 +95,14 @@ public class GroupServiceImpl implements GroupService {
                 principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return modelMapper.map(save, GroupServiceModel.class);
     }
 
     @Override
     public boolean findByName(String name) {
         return groupRepository.existsByName(name);
     }
+
+
 
     @Override
     public GroupViewModel findGroupViewModelById(Long id, UserViewModel userViewModel) {
@@ -125,7 +124,7 @@ public class GroupServiceImpl implements GroupService {
         UserEntity currentU = userService.findByUserName(currentUser);
         UserEntity otherU = userService.findByUserName(otherNameUser);
         // save group
-        currentU.getGroup().add(groupEntity);
+        currentU.getGroups().add(groupEntity);
         userRepository.saveAndFlush(currentU);
 
         MessageEntity message = new MessageEntity().setFromUser(currentU).setToUser(otherU)

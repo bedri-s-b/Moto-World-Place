@@ -1,10 +1,7 @@
 package com.example.motoworldplace.model.entity;
 
-import com.example.motoworldplace.model.entity.enums.GroupEnum;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,14 +13,13 @@ public class GroupEntity extends BaseEntity {
     private UserEntity admin;
     private Set<UserEntity> members = new HashSet<>();
     private PictureEntity picture;
-    private Set<PictureEntity> pictures = new HashSet<>();
     private LocalDate created;
 
     public GroupEntity() {
     }
 
 
-    @ManyToMany(mappedBy = "group",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "groups",fetch = FetchType.EAGER)
     public Set<UserEntity> getMembers() {
         return members;
     }
@@ -53,15 +49,6 @@ public class GroupEntity extends BaseEntity {
         return this;
     }
 
-    @OneToMany(mappedBy = "group",fetch = FetchType.EAGER)
-    public Set<PictureEntity> getPictures() {
-        return pictures;
-    }
-
-    public GroupEntity setPictures(Set<PictureEntity> pictures) {
-        this.pictures = pictures;
-        return this;
-    }
 
     @ManyToOne
     public PictureEntity getPicture() {

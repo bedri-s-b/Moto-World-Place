@@ -1,9 +1,7 @@
 package com.example.motoworldplace.model.service;
 
-import com.example.motoworldplace.model.entity.GroupEntity;
-import com.example.motoworldplace.model.entity.MessageEntity;
-import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.enums.CityEnum;
+import com.example.motoworldplace.model.view.GroupViewModel;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,17 +11,13 @@ public class UserServiceModel {
     private Long id;
     private String username;
     private String fullName;
+    private String password;
     private String email;
     private Integer age;
     private CityEnum city;
-    private String password;
-    private PictureEntity picture;
-    private Set<GroupEntity> group = new HashSet<>();
-    private Set<MessageEntity> receivedMessages = new HashSet<>();
+    private String picture;
+    private Set<GroupViewModel> groups = new HashSet<>();
     private boolean isOwner;
-
-    public UserServiceModel() {
-    }
 
     public Long getId() {
         return id;
@@ -70,33 +64,6 @@ public class UserServiceModel {
         return this;
     }
 
-    public PictureEntity getPicture() {
-        return picture;
-    }
-
-    public UserServiceModel setPicture(PictureEntity picture) {
-        this.picture = picture;
-        return this;
-    }
-
-    public Set<GroupEntity> getGroup() {
-        return group;
-    }
-
-    public UserServiceModel setGroup(Set<GroupEntity> group) {
-        this.group = group;
-        return this;
-    }
-
-    public Set<MessageEntity> getReceivedMessages() {
-        return receivedMessages;
-    }
-
-    public UserServiceModel setReceivedMessages(Set<MessageEntity> receivedMessages) {
-        this.receivedMessages = receivedMessages;
-        return this;
-    }
-
     public CityEnum getCity() {
         return city;
     }
@@ -106,12 +73,21 @@ public class UserServiceModel {
         return this;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPicture() {
+        return picture;
     }
 
-    public UserServiceModel setPassword(String password) {
-        this.password = password;
+    public UserServiceModel setPicture(String picture) {
+        this.picture = picture;
+        return this;
+    }
+
+    public Set<GroupViewModel> getGroups() {
+        return groups;
+    }
+
+    public UserServiceModel setGroups(Set<GroupViewModel> groups) {
+        this.groups = groups;
         return this;
     }
 
@@ -121,6 +97,15 @@ public class UserServiceModel {
 
     public UserServiceModel setOwner(boolean owner) {
         isOwner = owner;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserServiceModel setPassword(String password) {
+        this.password = password;
         return this;
     }
 }

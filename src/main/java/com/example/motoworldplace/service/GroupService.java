@@ -15,11 +15,11 @@ public interface GroupService {
 
     List<GroupViewModel> findAllGroup(Principal principal);
 
-    GroupServiceModel addGroup(GroupAddBindingModel groupAddBindingModel, String name) throws IOException;
+    void addGroup(GroupAddBindingModel groupAddBindingModel, String name) throws IOException;
 
     boolean findByName(String name);
 
-    GroupViewModel findGroupViewModelById(Long id, UserViewModel userViewModel);
+    GroupViewModel findGroupViewModelById(Long id, UserViewModel userServiceModel);
 
     void joinMemberToGroup(Long id, String name, String otherName);
 

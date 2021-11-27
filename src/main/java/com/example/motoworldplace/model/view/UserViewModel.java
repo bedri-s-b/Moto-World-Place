@@ -1,9 +1,5 @@
 package com.example.motoworldplace.model.view;
 
-import com.example.motoworldplace.model.entity.CityEntity;
-import com.example.motoworldplace.model.entity.GroupEntity;
-import com.example.motoworldplace.model.entity.MessageEntity;
-import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.enums.CityEnum;
 import com.example.motoworldplace.model.entity.enums.RoleEnum;
 
@@ -15,6 +11,7 @@ public class UserViewModel {
     private Long id;
     private String username;
     private String fullName;
+    private String password;
     private Integer age;
     private CityEnum city;
     private String picture;
@@ -90,6 +87,15 @@ public class UserViewModel {
 
     public UserViewModel setRole(RoleEnum role) {
         this.role = role;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserViewModel setPassword(String password) {
+        this.password = password;
         return this;
     }
 //    public String getUsername() {

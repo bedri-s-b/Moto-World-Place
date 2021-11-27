@@ -9,10 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -59,10 +56,22 @@ public class ProductController {
         productBindingModel.setSeller(username);
         productBindingModel.loadPictures();
 
-         productService.addProduct(productBindingModel);
+        productService.addProduct(productBindingModel);
 
 
         return "redirect:/products/all";
+    }
+
+    @GetMapping("/{id}/details")
+    public String detailsProduct(@PathVariable("id") Long id, Model model) {
+        ProductsViewModel product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "product";
+    }
+
+    @GetMapping("/product/{id}/edit")
+    public String editProduct(@PathVariable("id") Long id) {
+        return "";
     }
 
     @ModelAttribute

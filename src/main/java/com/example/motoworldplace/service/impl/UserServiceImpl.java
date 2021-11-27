@@ -19,7 +19,6 @@ import com.example.motoworldplace.service.cluodinary.CloudinaryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public void registerUser(UserServiceModel userServiceModel) {
         UserEntity user = modelMapper.map(userServiceModel, UserEntity.class);
         GroupEntity freeRaider = groupRepository.findByName("FREE_RAIDER");
-        user.getGroup().add(freeRaider);
+        user.getGroups().add(freeRaider);
         user
                 .setCity(cityService.findByName(userServiceModel.getCity()))
                 .setPicture(pictureService.getDefaultPic())
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
         UserEntity currentUser = userRepository.saveAndFlush(user);
         freeRaider.getMembers().add(currentUser);
         UserEntity admin = userRepository.findByUsername("Admin").orElse(null);
-        MessageEntity fromAdmin = new MessageEntity().setMessage(String.format(DEFAULT_MESSAGE,user.getFullName()))
+        MessageEntity fromAdmin = new MessageEntity().setMessage(String.format(DEFAULT_MESSAGE, user.getFullName()))
                 .setFromUser(admin)
                 .setToUser(currentUser)
                 .setReadMessage(false);
@@ -113,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserServiceModel> findByUsername(String username,Principal principal) {
+    public Optional<UserServiceModel> findByUsername(String username, Principal principal) {
         return userRepository.findByUsername(username).map(u -> {
             UserServiceModel userServiceModel = modelMapper.map(u, UserServiceModel.class);
             userServiceModel.setOwner(username.equals(principal.getName()));
@@ -123,7 +122,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserServiceModel> findById(Long id) {
-        return userRepository.findById(id).map(userEntity -> modelMapper.map(userEntity,UserServiceModel.class));
+        return userRepository.findById(id).map(userEntity -> modelMapper.map(userEntity, UserServiceModel.class));
 
     }
 
@@ -163,20 +162,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserEntity user, GroupEntity group) {
-        user.setGroup(Set.of(group));
+        user.getGroups().add(group);
         userRepository.save(user);
     }
 
     @Override
     public UserViewModel findUserViewModelByUsername(String name) {
         UserEntity userEntity = findByUserName(name);
-        UserViewModel userViewModel = modelMapper.map(userEntity, UserViewModel.class);
-        userViewModel.getGroups().addAll(userEntity.getGroup().stream().map(GroupEntity::getName).collect(Collectors.toSet()));
+        UserViewModel userViewModel = new UserViewModel()
+                .setAge(userEntity.getAge())
+                .setUsername(userEntity.getUsername())
+                .setCity(userEntity.getCity().getName())
+                .setFullName(userEntity.getFullName())
+                .setPicture(userEntity.getPicture().getUrl())
+                .setId(userEntity.getId());
+        userViewModel.getGroups().addAll(userEntity.getGroups().stream().map(GroupEntity::getName).collect(Collectors.toSet()));
         return userViewModel;
     }
 
     @Override
-    public boolean isOwner(String username,Long id) {
+    public boolean isOwner(String username, Long id) {
         return userRepository.findById(id).get().getUsername().equals(username);
     }
 

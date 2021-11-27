@@ -9,4 +9,6 @@ public interface ProductService {
     List<ProductsViewModel> findAllProductsViewModel();
 
     void addProduct(ProductBindingModel productBindingModel);
+
+    ProductsViewModel findProductById(Long id);
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+    <main>
+
+       <div class="container ">
+
+        <div class="row">
+            <div
+                    th:action="@{/users/message/{id}/send(id=${toUser.id})}"
+                    th:method="post"
+                    th:object="${current}" class="justify-content-center" id="form_container">
+
+                <p>From <span th:text="*{fullName}" ></span></p>
+               <div >
+                <img th:src="*{picture}"
+                alt="profile-pic" class="rounded-circle" width="300">
+               </div>
+
+
+                <form
+                        th:action="@{/users/message/{id}/send(id=${toUser.id})}"
+                        th:method="post"
+
+                        role="form" method="post" id="reused_form">
+
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label for="message">
+                                Message:</label>
+                            <textarea th:field="${userMessageBindingModel.message}" th:errorclass="is-invalid" class="form-control" type="textarea" name="message" id="message" maxlength="6000" rows="7"></textarea>
+                            <small id="messageHelpInline" class="invalid-feedback bg-danger text-light rounded">
+                                Message length must be more than 5 characters.
+                            </small>
+                        </div>
+                    </div>
+
+                    <p>To <span th:text="${toUser.fullName}" ></span></p>
+                    <div >
+                        <img th:src="${toUser.picture}"
+                             alt="profile-pic" class="rounded-circle" width="300">
+                    </div>
+
+
+                           <button  type="submit" class="col-md-6 mx-auto btn btn-success btn-lg btn-block mt-5 mb-5">Send →</button>
+                </form>
+
+
+            </div>
+        </div>
+
+       </div>
+
+    </main>
+
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+</html>

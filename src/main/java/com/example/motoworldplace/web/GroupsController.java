@@ -1,6 +1,7 @@
 package com.example.motoworldplace.web;
 
 import com.example.motoworldplace.model.binding.GroupAddBindingModel;
+import com.example.motoworldplace.model.service.GroupServiceModel;
 import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.model.view.GroupViewModel;
 import com.example.motoworldplace.model.view.UserViewModel;
@@ -96,7 +97,7 @@ public class GroupsController {
         GroupViewModel groupViewModelById = groupService.findGroupViewModelById(id, user);
         model.addAttribute("group", groupViewModelById);
         List<UserServiceModel> members = groupViewModelById.getMembersName().stream().map(name -> {
-            return userService.findByUsername(name,principal).get();
+            return userService.findByUsername(name, principal).get();
         }).collect(Collectors.toList());
         model.addAttribute("members", members);
 
