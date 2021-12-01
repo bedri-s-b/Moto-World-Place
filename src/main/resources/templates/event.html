@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+<main>
+
+    <div class="container">
+        <div th:object="${event}"
+             class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+
+
+            <div class="row">
+                <h2 class="text-info" th:text="*{title}">Title</h2>
+            </div>
+
+
+            <div class="row">
+                <label for="event" class="text-white font-weight-bold">Event</label>
+                <article th:text="*{description}" id="event" class="text-info form-group col-md-8 mb-3">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit quod quas nulla laudantium
+                    voluptates voluptate qui aspernatur nemo possimus beatae? In quae atque blanditiis similique rem
+                    rerum, quaerat numquam eum.
+                </article>
+            </div>
+
+            <div class="row">
+
+                <label for="date-and-time" class="text-white font-weight-bold">Date and time</label>
+                <div id="date-and-time" class="form-group col-md-6 mb-3">
+
+                    <p class="text-info" th:text="*{stared}">23.23.2001</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <label for="author" class="text-white font-weight-bold">Author</label>
+                <p th:text="*{creator}" id="author" class="text-info form-group col-md-8 mb-3">
+                    Admin Adminov
+                </p>
+            </div>
+
+            <div class="row">
+                <label for="group" class="text-white font-weight-bold">Members</label>
+                <p id="group" class="form-group col-md-8 mb-3">Members for moment is : <a class="text-info"
+                                                                                          th:each="m :*{membersCome}"
+                                                                                          th:href="@{/users/profile/{id}(id=${m.id})}"
+                                                                                          th:text=" ${m.username} + ' '"></a>
+                </p>
+            </div>
+
+
+        </div>
+
+
+        <div class="row" th:if="${event.isCanDelete()}">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <form type="submit" class="btn btn-warning btn-lg"> Delete event</form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" th:unless="${event.isMemberEvent()}">
+            <form th:method="POST"
+                  th:action="@{/groups/{idGroup}/group/events/{idEvent}(idGroup=${idGroup},idEvent=${idEvent})}">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <button type="submit" class="btn btn-success btn-lg"> Join us</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+
+</html>

@@ -12,7 +12,6 @@ public class UserProfileUpdateBindingModel {
 
     private Long id;
     private MultipartFile picture;
-//    private String pictureUrl;
     private String fullName;
     private CityEnum city;
     private String username;
@@ -40,14 +39,6 @@ public class UserProfileUpdateBindingModel {
         return this;
     }
 
-//    public String getPictureUrl() {
-//        return pictureUrl;
-//    }
-//
-//    public UserProfileUpdateBindingModel setPictureUrl(String pictureUrl) {
-//        this.pictureUrl = pictureUrl;
-//        return this;
-//    }
 
     @NotNull
     @Size(min = 5,max = 20)

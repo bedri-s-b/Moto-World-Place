@@ -11,15 +11,19 @@
 
         <div class="container">
             <h2 class="text-center text-white">Update Product</h2>
-            <form
-                class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <form th:object="${productUpdateBindingModel}"
+                  th:action="@{/products/{id}/edit(id=*{id})}"
+                  th:method="patch"
+                  class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
                 
                 
                 <div class="row">
                     <div class="form-group col-md-6 mb-3">
                         <label for="brand" class="text-white font-weight-bold">Brand</label>
                         <input id="brand"  type="text"
-                            class="form-control" placeholder="Brand" />
+                               th:field="*{brand}"
+                               th:errorclass="is-invalid"
+                            class="form-control" />
                         <p class="invalid-feedback errors alert alert-danger">
                             Brand is required.
                         </p>
@@ -27,7 +31,9 @@
                     <div class="form-group col-md-6 mb-3">
                         <label for="model" class="text-white font-weight-bold">Model</label>
                         <input id="model"  type="text"
-                            class="form-control" placeholder="Model" />
+                               th:field="*{model}"
+                               th:errorclass="is-invalid"
+                            class="form-control" />
                         <p class="invalid-feedback errors alert alert-danger">
                             Model is required.
                         </p>
@@ -38,8 +44,8 @@
                 <div class="row">
                     <div class="form-group col-md-6 mb-3">
                         <label class="text-center text-white font-weight-bold" for="type">Type</label>
-                        <select  id="type" class="form-control">
-                            <option></option>
+                        <select  th:field="*{type}" id="type" class="form-control">
+                            <option th:each="t : ${T(com.example.motoworldplace.model.entity.enums.TypeEnum).values()}" th:text="${t.name()}" th:value="${t} " ></option>
                         </select>
                         <p class="invalid-feedback errors alert alert-danger">
                             Type is required.
@@ -48,7 +54,9 @@
                     <div class="form-group col-md-6 mb-3">
                         <label for="power" class="text-white font-weight-bold">Power</label>
                         <input id="power"  type="number"
-                            class="form-control" placeholder="Power" />
+                            class="form-control"
+                               th:field="*{powerHp}"
+                               th:errorclass="is-invalid"/>
                         <p class="invalid-feedback errors alert alert-danger">
                             Power is required.
                         </p>
@@ -59,7 +67,9 @@
                     <div class="form-group col-md-6 mb-3">
                         <label for="kilometers" class="text-white font-weight-bold">Kilometers</label>
                         <input id="kilometers"  type="number"
-                            class="form-control" placeholder="Kilometers" />
+                            class="form-control"
+                               th:field="*{kilometers}"
+                               th:errorclass="is-invalid"/>
                         <p class="invalid-feedback errors alert alert-danger">
                             Kilometers is required.
                         </p>
@@ -67,9 +77,11 @@
                     <div class="form-group col-md-6 mb-3">
                         <label for="price" class="text-white font-weight-bold">Price</label>
                         <input id="price"  type="number"
-                            class="form-control" placeholder="Price" />
+                            class="form-control"
+                               th:field="*{price}"
+                               th:errorclass="is-invalid" />
                         <p class="invalid-feedback errors alert alert-danger">
-                            Model is required.
+                            Price is required.
                         </p>
                     </div>
                 </div>
@@ -77,17 +89,21 @@
                 <div class="row">
                     <div class="form-group col-md-6 mb-3">
                         <label for="Year" class="text-white font-weight-bold">Year</label>
-                        <input id="year"  type="number" min="1900"
-                            class="form-control" placeholder="year" />
+                        <input id="year"  type="number"
+                            class="form-control"
+                               th:field="*{year}"
+                               th:errorclass="is-invalid"/>
                         <p class="invalid-feedback errors alert alert-danger">
                             Year is required.
                         </p>
                     </div>
 
                     <div class="form-group col-md-6 mb-3">
-                        <label for="phone" class="text-white font-weight-bold">Phone</label>
-                        <input id="phone"  type="number"
-                            class="form-control" placeholder="Price" />
+                        <label for="phoneNumber" class="text-white font-weight-bold">Phone</label>
+                        <input id="phoneNumber"  type="text"
+                            class="form-control"
+                               th:field="*{phoneNumber}"
+                               th:errorclass="is-invalid" />
                         <p class="invalid-feedback errors alert alert-danger">
                             Phone is required.
                         </p>
@@ -97,10 +113,12 @@
 
                 <div class="form-group">
                     <label class="text-white font-weight-bold" for="description">Description</label>
-                    <textarea id="description" th:field="*{description}" th:errorclass="is-invalid" type="textarea"
+                    <textarea th:field="*{description}"
+                              th:errorclass="is-invalid"
+                            id="description" type="textarea"
                         class="form-control" rows="3" placeholder="Description"></textarea>
                     <p class="invalid-feedback errors alert alert-danger">
-                        Description is required.
+                        Description is required, length must be min 5 symbols
                     </p>
                 </div>
              

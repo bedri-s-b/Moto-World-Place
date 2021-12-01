@@ -13,4 +13,8 @@ public interface MessageRepository extends JpaRepository<MessageEntity,Long> {
     List<MessageEntity> findByToUser_Username(String username);
 
     List<MessageEntity> findByFromUser_Username(String username);
+
+    MessageEntity findByFromUser(UserEntity userEntity);
+
+    MessageEntity findByToUser(UserEntity toUser);
 }

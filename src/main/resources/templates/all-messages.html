@@ -39,7 +39,7 @@
                         <div class="inbox-message">
                             <h1>Outbox Messages</h1>
                             <ul>
-                                <li th:each="m : ${messagesToUser}" th:object="${m}">
+                                <li th:each="m : ${messagesFromUser}" th:object="${m}">
                                     <a th:href="@{/users/messages/outbox/{id} (id=*{id})}">
                                         <div class="message-avatar">
                                             <img th:src="*{getFromUserPicture()}" alt="">
@@ -90,7 +90,7 @@
                         <div class="inbox-message">
                             <h1>Inbox Messages</h1>
                             <ul>
-                                <li th:each="m : ${messagesFromUser}" th:object="${m}">
+                                <li th:each="m : ${messagesToUser}" th:object="${m}">
                                     <a th:href="@{/users/messages/inbox/{id} (id=*{id})}">
                                         <div class="message-avatar">
                                             <img th:src="*{getToUserPicture()}" alt="picture-user">

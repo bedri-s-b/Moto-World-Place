@@ -32,7 +32,7 @@
                 <ul class="nav ">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Evens</a>
+                        <a class="nav-link" th:href="@{/groups/{idGroup}/group/events(idGroup=${group.id})}">Evens</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Gallery</a>
@@ -40,10 +40,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">All Groups</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Edit</a>
+                    </li>
 
                 </ul>
             </div>
-            >
+
         </section>
 
     </div>

@@ -26,4 +26,6 @@ public interface GroupService {
     List<GroupViewModel> findAllGroupWhichAdmin(String name);
 
     boolean isMember(String username, Long id);
+
+    String findNameById(Long id);
 }

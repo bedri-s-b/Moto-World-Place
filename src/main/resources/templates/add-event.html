@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+    <main>
+
+        <form th:action="@{/groups/{idGroup}/group/events/add(idGroup=${idGroup})}"
+              th:method="POST"
+              th:object="${eventBindingModel}"
+            class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center container">
+
+            <div class="form-group col-md-3 mb-3">
+                <div class="label-holder  textCol d-flex justify-content-center">
+                    <label for="title" class="h4 mb-2">Title</label>
+                </div>
+
+                <input th:field="*{title}" th:errorclass="is-invalid"
+                       name="title" id="title" type="text" class="form-control"
+                    placeholder="Title" />
+                <p class="errors alert alert-danger invalid-feedback">
+                   Title is required.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <div class="label-holder  textCol d-flex justify-content-center">
+                    <label for="description" class="h4 mb-2">Description</label>
+                </div>
+                <textarea th:field="*{description}" th:errorclass="is-invalid"
+                        name="description" id="description"
+                    type="textarea" class="form-control" rows="10%" cols="40%" placeholder="Description"></textarea>
+                <p class="errors alert alert-danger invalid-feedback">
+                    Description is required, min symbols is 5.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <div class="label-holder  textCol d-flex justify-content-center">
+                    <label for="started" class="h4 mb-2">Event started</label>
+                </div>
+                <input th:field="*{started}"
+                        type="datetime-local" class="form-control" pattern="dd MMM uuuu HH:mm" id="started" name="started"/>
+                <small th:if="${before}" class=" text-danger">Date can be in present ot future.</small>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-info btn-lg" value="Submit Offer" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </main>
+
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+
+</html>

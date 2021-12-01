@@ -3,6 +3,7 @@ package com.example.motoworldplace.service.impl;
 import com.example.motoworldplace.model.entity.BaseEntity;
 import com.example.motoworldplace.model.entity.MessageEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
+import com.example.motoworldplace.model.entity.enums.RoleEnum;
 import com.example.motoworldplace.model.view.MessageViewModel;
 import com.example.motoworldplace.repository.MessageRepository;
 import com.example.motoworldplace.repository.UserRepository;
@@ -66,22 +67,26 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public MessageViewModel findMessageOut(Long id) {
         return messageRepository.findById(id).
-                map(message -> {
-                    message.setReadMessage(true);
-                    return modelMapper.map(message, MessageViewModel.class);
-                }).orElseThrow();
+                map(message -> modelMapper.map(message, MessageViewModel.class)
+                ).orElseThrow();
     }
 
     @Override
     public boolean isOwnerOnMessages(String username, Long id) {
+        if (userRepository.findByUsername(username).get().getRole().equals(RoleEnum.ADMIN)){
+            return true;
+        }
         List<Long> byUserSend = messageRepository.findByToUser_Username(username)
                 .stream().map(BaseEntity::getId).collect(Collectors.toList());
 
-        List<Long> collect = messageRepository.findByFromUser_Username(username).stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Long> collect = messageRepository.findByFromUser_Username(username)
+                .stream().map(BaseEntity::getId).collect(Collectors.toList());
 
         collect.addAll(byUserSend);
 
-        return collect.contains(id);
+
+
+        return collect.contains(id) ;
     }
 
     @Override
@@ -104,6 +109,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public MessageViewModel findMessageIn(Long id) {
         return messageRepository.findById(id).
-                map(message -> modelMapper.map(message, MessageViewModel.class)).orElseThrow();
+                map(message -> {
+                    return modelMapper.map(message, MessageViewModel.class).setReadMessage(true);
+                }).orElseThrow();
     }
 }

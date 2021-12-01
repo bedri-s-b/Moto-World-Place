@@ -24,6 +24,7 @@ public class ProductsViewModel {
     private String description;
     private Set<String> pictures = new HashSet<>();
     private String created;
+    private boolean isOwnerOfProduct;
 
     public String getBrand() {
         return brand;
@@ -140,6 +141,15 @@ public class ProductsViewModel {
 
     public ProductsViewModel setCreated(String created) {
         this.created = created;
+        return this;
+    }
+
+    public boolean isOwnerOfProduct() {
+        return isOwnerOfProduct;
+    }
+
+    public ProductsViewModel setOwnerOfProduct(boolean ownerOfProduct) {
+        isOwnerOfProduct = ownerOfProduct;
         return this;
     }
 }

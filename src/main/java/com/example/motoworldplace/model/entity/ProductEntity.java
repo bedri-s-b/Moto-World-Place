@@ -68,7 +68,7 @@ public class ProductEntity extends BaseEntity{
     }
 
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     public Set<PictureEntity> getPictures() {
         return pictures;
     }

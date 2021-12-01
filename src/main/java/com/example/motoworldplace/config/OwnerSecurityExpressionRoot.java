@@ -1,8 +1,6 @@
 package com.example.motoworldplace.config;
 
-import com.example.motoworldplace.service.GroupService;
-import com.example.motoworldplace.service.MessageService;
-import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.service.*;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
@@ -14,6 +12,8 @@ public class OwnerSecurityExpressionRoot extends SecurityExpressionRoot implemen
     private GroupService groupService;
     private UserService userService;
     private MessageService messageService;
+    private ProductService productService;
+    private EventService eventService;
     private Object filterObject;
     private Object returnObject;
 
@@ -29,6 +29,9 @@ public class OwnerSecurityExpressionRoot extends SecurityExpressionRoot implemen
 
     public boolean isMember(Long id) {
         String userName = currentUsername();
+        if (isAdmin()){
+            return true;
+        }
         if (userName != null) {
             return groupService.isMember(userName, id);
         }
@@ -37,21 +40,55 @@ public class OwnerSecurityExpressionRoot extends SecurityExpressionRoot implemen
 
     public boolean isOwner(Long id){
         String userName = currentUsername();
+        if (isAdmin()){
+            return true;
+        }
         if (userName != null) {
             return userService.isOwner(userName, id);
         }
         return false;
     }
 
+    public boolean isCreatorEvent(Long id){
+        String userName = currentUsername();
+        if (isAdmin()){
+            return true;
+        }
+        if (userName != null){
+            return eventService.isCreatorEvent(userName,id);
+        }
+        return false;
+    }
+
     public boolean isOwnerOnMessages(Long id){
         String userName = currentUsername();
+        if (isAdmin()){
+            return true;
+        }
         if (userName != null) {
             return messageService.isOwnerOnMessages(userName, id);
         }
         return false;
     }
 
+    public boolean isOwnerOfProduct(Long id){
+        String userName = currentUsername();
+        if (isAdmin()){
+            return true;
+        }
+        if (userName!= null){
+            return productService.isOwnerOfProduct(userName,id);
+        }
+        return false;
+    }
 
+
+
+
+
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
     public void setGroupService(GroupService groupService) {
         this.groupService = groupService;
@@ -71,6 +108,11 @@ public class OwnerSecurityExpressionRoot extends SecurityExpressionRoot implemen
             return  ((UserDetails) auth.getPrincipal()).getUsername();
         }
         return null;
+    }
+
+    public boolean isAdmin(){
+        Authentication auth = getAuthentication();
+        return hasAnyRole("ROLE_ADMIN");
     }
 
     @Override
@@ -95,6 +137,11 @@ public class OwnerSecurityExpressionRoot extends SecurityExpressionRoot implemen
 
     @Override
     public Object getThis() {
+        return this;
+    }
+
+    public OwnerSecurityExpressionRoot setEventService(EventService eventService) {
+        this.eventService = eventService;
         return this;
     }
 }

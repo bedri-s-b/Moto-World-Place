@@ -182,7 +182,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isOwner(String username, Long id) {
-        return userRepository.findById(id).get().getUsername().equals(username);
+
+        UserEntity userEntity = userRepository.findById(id).get();
+
+        if (userEntity.getRole().equals(RoleEnum.ADMIN)){
+            return true;
+        }
+
+        return userEntity.getUsername().equals(username);
     }
 
 

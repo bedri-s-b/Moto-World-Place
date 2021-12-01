@@ -7,7 +7,6 @@ import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.UserEntity;
 import com.example.motoworldplace.model.entity.enums.GroupEnum;
 import com.example.motoworldplace.model.entity.enums.RoleEnum;
-import com.example.motoworldplace.model.service.GroupServiceModel;
 import com.example.motoworldplace.model.view.GroupViewModel;
 import com.example.motoworldplace.model.view.UserViewModel;
 import com.example.motoworldplace.repository.GroupRepository;
@@ -16,17 +15,18 @@ import com.example.motoworldplace.repository.UserRepository;
 import com.example.motoworldplace.service.GroupService;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
-import com.example.motoworldplace.service.cluodinary.CloudinaryImg;
 import com.example.motoworldplace.service.cluodinary.CloudinaryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,18 +38,15 @@ public class GroupServiceImpl implements GroupService {
     private final UserService userService;
     private final PictureService pictureService;
     private final ModelMapper modelMapper;
-    private final CloudinaryService cloudinaryService;
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final MotoWorldUserServiceImpl motoWorldUserService;
 
-
-    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, PictureService pictureService, ModelMapper modelMapper, CloudinaryService cloudinaryService, UserRepository userRepository, MessageRepository messageRepository, MotoWorldUserServiceImpl motoWorldUserService) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, PictureService pictureService, ModelMapper modelMapper, UserRepository userRepository, MessageRepository messageRepository, MotoWorldUserServiceImpl motoWorldUserService) {
         this.groupRepository = groupRepository;
         this.userService = userService;
         this.pictureService = pictureService;
         this.modelMapper = modelMapper;
-        this.cloudinaryService = cloudinaryService;
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
         this.motoWorldUserService = motoWorldUserService;
@@ -79,6 +76,7 @@ public class GroupServiceImpl implements GroupService {
 
         GroupEntity groupEntity = modelMapper.map(groupAddBindingModel, GroupEntity.class);
         UserEntity currentUser = userService.findByUserName(username);
+        currentUser.setGroupEnum(RoleEnum.GROUP_ADMIN);
         groupEntity.setAdmin(currentUser);
         groupEntity.getMembers().add(currentUser);
         String newPicture = pictureService.createNewPicture(groupAddBindingModel.getPicture(), currentUser.getId());
@@ -101,7 +99,6 @@ public class GroupServiceImpl implements GroupService {
     public boolean findByName(String name) {
         return groupRepository.existsByName(name);
     }
-
 
 
     @Override
@@ -155,9 +152,13 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public boolean isMember(String username, Long id) {
 
+
         GroupEntity group = groupRepository.findById(id).orElse(null);
 
         UserEntity user = userRepository.findByUsername(username).orElse(null);
+        if (user.getRole().equals(RoleEnum.ADMIN)){
+            return true;
+        }
 
         if (user == null || group == null) {
             return false;
@@ -171,4 +172,11 @@ public class GroupServiceImpl implements GroupService {
         }
         return false;
     }
+
+    @Override
+    public String findNameById(Long id) {
+        return groupRepository.findById(id).get().getName();
+    }
+
+
 }

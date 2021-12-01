@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+    <main>
+
+        <div class="row justify-content-center" >
+
+            <div  th:each="e : ${events}"
+                  th:object="${e}"
+                    class="event col-8">
+
+                <section
+                        class=" card-body d-flex flex-column align-items-start">
+                    <strong class="h3 mb-4 justify-content-center text-primary" th:text="*{title}"></strong>
+
+                    <h3 class="h4 mb-2 ">Started <span class="text-info" th:text="*{stared}"></span></h3>
+                    <h3 class="h4 mb-2 ">Creator <span class="text-info" th:text="*{creator}"></span></h3>
+                    <h3 class="h4 mb-2 ">Count of members <span class="text-info" th:text="*{membersCome.size()}"></span></h3>
+
+                    <div class="col-12">
+                        <a type="submit"  th:href="@{/groups/{idGroup}/group/events/{idEvent}(idGroup=${idGroup},idEvent=*{id})}" class="col-3 btn btn-info btn-lg ">see more</a>
+                    </div>
+                </section>
+            </div>
+            <a th:href="@{/groups/{idGroup}/group/events/add(idGroup=${idGroup})}" type="submit" class="col-md-6 mx-auto btn btn-success btn-lg btn-block mt-5 mb-5">create event</a>
+        </div>
+
+        
+          
+    </main>
+
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

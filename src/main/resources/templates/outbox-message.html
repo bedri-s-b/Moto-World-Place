@@ -33,13 +33,13 @@
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <form class="btn btn-sm btn-outline-secondary"
-                                      th:method="delete"
-                                      th:action="@{/users/messages/outbox/{id} (id=*{id})}">
-                                    <input type="submit" class="btn btn-link" value="Delete"/>
-                                </form>
-                            </div>
+<!--                            <div class="btn-group">-->
+<!--                                <form class="btn btn-sm btn-outline-secondary"-->
+<!--                                      th:method="delete"-->
+<!--                                      th:action="@{/users/messages/outbox/{id} (id=*{id})}">-->
+<!--                                    <input type="submit" class="btn btn-link" value="Delete"/>-->
+<!--                                </form>-->
+<!--                            </div>-->
                             <small class="text-muted" th:text="*{getTime()}"></small>
                         </div>
 

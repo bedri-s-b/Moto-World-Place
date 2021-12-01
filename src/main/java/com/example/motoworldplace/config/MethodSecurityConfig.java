@@ -1,8 +1,6 @@
 package com.example.motoworldplace.config;
 
-import com.example.motoworldplace.service.GroupService;
-import com.example.motoworldplace.service.MessageService;
-import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +23,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     public MotoWorldMethodSecurityExpressionHandler createExpressionHandler(GroupService groupService, UserService userService,
-                                                                            MessageService messageService){
-      return new MotoWorldMethodSecurityExpressionHandler(groupService, userService, messageService);
+                                                                            MessageService messageService, ProductService productService, EventService eventService){
+      return new MotoWorldMethodSecurityExpressionHandler(groupService, userService, messageService, productService, eventService);
     }
 }

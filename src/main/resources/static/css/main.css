@@ -33,7 +33,7 @@ footer {
 .container{
     border: solid #8c0c19;
     border-radius: 1%;
-    background:rgba(187, 186, 182, 0.7);
+    background:rgba(187, 186, 182, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -209,4 +209,11 @@ div.message-body span.unread{
 
 a:hover{
     text-decoration:none;
+}
+
+div .event{
+    border: solid #b11b07;
+    border-radius: 50px;
+    line-height: 14px;
+    background-color: #dceadf;
 }

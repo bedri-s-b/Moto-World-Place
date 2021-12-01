@@ -9,16 +9,20 @@
 
 <main>
 
-    <div class=" offers row mx-auto d-flex flex-row justify-content-center">
+    <div class="container offers row mx-auto d-flex flex-row justify-content-center">
 
         <div th:each="p : ${products}"
              th:object="${p}"
              class="col-4">
 
-            <ul class="offer-details list-group list-group-flush">
-                <div class="card-img-top-wrapper">
-                  <img class="card-img-top" th:src="*{pictures.toArray()[0]}" alt="Car image">
-                </div>
+            <ul class="offer-details list-group list-group-flush" >
+
+                <th:block th:unless="*{pictures.isEmpty()}">
+                    <li class="card-img-top-wrapper">
+                        <img class="card-img-top" th:src="*{pictures.toArray()[0]}" height="300" alt="Car image">
+                    </li>
+                </th:block>
+
 
 
 

@@ -1,14 +1,16 @@
-package com.example.motoworldplace.model.service;
+package com.example.motoworldplace.model.binding;
 
 import com.example.motoworldplace.model.entity.enums.TypeEnum;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProductServiceModel {
-
+public class ProductUpdateBindingModel {
+    private Long id;
     private String brand;
     private String model;
     private TypeEnum type;
@@ -17,68 +19,89 @@ public class ProductServiceModel {
     private BigDecimal price;
     private Integer year;
     private String phoneNumber;
-    private String seller;
+//    private String seller;
     private String description;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public ProductUpdateBindingModel setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    @NotNull
     public String getBrand() {
         return brand;
     }
 
-    public ProductServiceModel setBrand(String brand) {
+    public ProductUpdateBindingModel setBrand(String brand) {
         this.brand = brand;
         return this;
     }
 
+    @NotNull
     public String getModel() {
         return model;
     }
 
-    public ProductServiceModel setModel(String model) {
+    public ProductUpdateBindingModel setModel(String model) {
         this.model = model;
         return this;
     }
 
+    @NotNull
     public TypeEnum getType() {
         return type;
     }
 
-    public ProductServiceModel setType(TypeEnum type) {
+    public ProductUpdateBindingModel setType(TypeEnum type) {
         this.type = type;
         return this;
     }
 
+    @NotNull
+    @Positive
     public Integer getPowerHp() {
         return powerHp;
     }
 
-    public ProductServiceModel setPowerHp(Integer powerHp) {
+    public ProductUpdateBindingModel setPowerHp(Integer powerHp) {
         this.powerHp = powerHp;
         return this;
     }
 
+    @NotNull
+    @Positive
     public Integer getKilometers() {
         return kilometers;
     }
 
-    public ProductServiceModel setKilometers(Integer kilometers) {
+    public ProductUpdateBindingModel setKilometers(Integer kilometers) {
         this.kilometers = kilometers;
         return this;
     }
 
+    @NotNull
+    @Positive
     public BigDecimal getPrice() {
         return price;
     }
 
-    public ProductServiceModel setPrice(BigDecimal price) {
+    public ProductUpdateBindingModel setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
 
+    @NotNull
+    @Positive
     public Integer getYear() {
         return year;
     }
 
-    public ProductServiceModel setYear(Integer year) {
+    public ProductUpdateBindingModel setYear(Integer year) {
         this.year = year;
         return this;
     }
@@ -87,29 +110,28 @@ public class ProductServiceModel {
         return phoneNumber;
     }
 
-    public ProductServiceModel setPhoneNumber(String phoneNumber) {
+    public ProductUpdateBindingModel setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
 
-    public String getSeller() {
-        return seller;
-    }
+//    public String getSeller() {
+//        return seller;
+//    }
+//
+//    public ProductUpdateBindingModel setSeller(String seller) {
+//        this.seller = seller;
+//        return this;
+//    }
 
-    public ProductServiceModel setSeller(String seller) {
-        this.seller = seller;
-        return this;
-    }
-
+    @NotNull
+    @Size(min = 5)
     public String getDescription() {
         return description;
     }
 
-    public ProductServiceModel setDescription(String description) {
+    public ProductUpdateBindingModel setDescription(String description) {
         this.description = description;
         return this;
     }
-
-
-
 }

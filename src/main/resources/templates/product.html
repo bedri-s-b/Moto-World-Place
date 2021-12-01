@@ -7,55 +7,68 @@
 
 <header th:replace="fragments/navbar :: nav"></header>
 
-    <main>
-        
-        <div th:object="${product}"
-                class="container-fluid">
-            <h2 class="text-center text-white mt-5">Details</h2>
-            <div class="offers row mx-auto d-flex flex-row justify-content-center">
-                <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
-        
-                    <div class="card-body pb-1">
-                        <h5 class="card-title" th:text="'Product ' + *{year} + ' Brand ' + *{brand} + ' Model ' + *{model} " >
-                            Product year Brand name Model name</h5>
-                    </div>
-                    <ul class="offer-details list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="card-text"> Brand: <span th:text="*{brand}"></span></div>
-                            <div class="card-text"> Model: <span th:text="*{model}"></span></div>
-                            <div class="card-text"> Type: <span th:text="*{type}"></span></div>
-                            <div class="card-text"> Power Hp: <span th:text="*{powerHp}"></span></div>
-                            <div class="card-text"> Kilometers <span th:text="*{kilometers}"></span></div>
-                            <div class="card-text"> Phone <span th:text="*{phoneNumber}"></span></div>
-                            <div class="card-text"> Seller <span th:text="*{seller}"></span></div>
-                            <div class="card-text"> Created <span th:text="*{created}"></span></div>
-                            <textarea th:text="*{description}" class="form-control" type="textarea" name="message" id="message" maxlength="6000" rows="7"></textarea>
-                        </li>
-                    </ul>
-                    <div class="card-body">
-                        <div class="row">
-                            <a class="btn btn-link" th:href="@{/product/{id}/edit(id=*{id})}">Update</a>
+<main>
 
-                                <form th:action="@{/product/{id}(id=*{id})}" th:method="delete">
-                                    <input type="submit" class="btn btn-link" value="Delete"/>
-                                </form>
+    <div th:object="${product}"
+         class="container-fluid justify-content-center">
+        <h2 class="text-center text-white mt-5 ">Details</h2>
+        <div class="offers row mx-auto d-flex flex-row justify-content-center">
+            <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
 
-                        </div>
-                    </div>
+                <div class="card-body pb-1">
+                    <h5 class="card-title" th:text="'Product ' + *{brand} + ' ' + *{model} + ' ' + *{year} ">
+                        Product year Brand name Model name</h5>
                 </div>
-                <div  th:each="p : *{pictures}"
-                        class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
+                <ul class="offer-details list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="card-text"> Brand: <span th:text="*{brand}" class="text-info"></span></div>
+                        <div class="card-text"> Model: <span th:text="*{model}" class="text-info"></span></div>
+                        <div class="card-text"> Type: <span th:text="*{type}" class="text-info"></span></div>
+                        <div class="card-text"> Power Hp: <span th:text="*{powerHp}" class="text-info"></span></div>
+                        <div class="card-text"> Kilometers: <span th:text="*{kilometers}" class="text-info"></span>
+                        </div>
+                        <div class="card-text"> Year: <span th:text="*{year}" class="text-info"></span></div>
+                        <div class="card-text"> Phone: <span th:text="*{phoneNumber}" class="text-info"></span></div>
+                        <div class="card-text"> Seller: <span th:text="*{seller}" class="text-info"></span></div>
+                        <div class="card-text"> Created: <span th:text="*{created}" class="text-info"></span></div>
+                        <textbox th:text="*{description}" class="form-control " type="te" name="message" id="message"
+                                 maxlength="6000" rows="7"></textbox>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <div class="row">
+                        <th:block th:if="*{isOwnerOfProduct()}">
+
+                            <a class="btn btn-link" th:href="@{/products/{id}/edit(id=*{id})}">Update</a>
+
+                            <form th:action="@{/products/{id}(id=*{id})}" th:method="delete">
+                                <input type="submit" class="btn btn-link" value="Delete"/>
+                            </form>
+
+
+                        </th:block>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <th:block th:unless="${product.pictures.isEmpty()}">
+                <div th:each="p : ${product.pictures}"
+                     class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0 ">
                     <img class="card-img-top" th:src="${p}" alt="Car image">
                 </div>
-            </div>
-
+            </th:block>
         </div>
 
-    </main>
+
+    </div>
+</main>
 
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-    
+
 </body>
 </html>

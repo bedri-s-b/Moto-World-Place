@@ -46,14 +46,14 @@ public class MessageController {
 
     @PreAuthorize("isOwnerOnMessages(#id)")
     @GetMapping("/users/messages/outbox/{id}")
-    public String inBoxMessage(@PathVariable Long id, Model model, Principal principal) {
+    public String outBoxMessage(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageService.findMessageOut(id));
         return "outbox-message";
     }
 
     @PreAuthorize("isOwnerOnMessages(#id)")
     @GetMapping("/users/messages/inbox/{id}")
-    public String outBoxMessage(@PathVariable Long id, Model model) {
+    public String inBoxMessage(@PathVariable Long id, Model model) {
         model.addAttribute("message", messageService.findMessageIn(id));
         return "inbox-message";
     }

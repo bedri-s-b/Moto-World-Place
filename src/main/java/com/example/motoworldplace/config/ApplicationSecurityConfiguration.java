@@ -45,7 +45,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 
                 // как да се извърши логаут
                 .logout()
-                .logoutUrl("/users/logout")
+                    .logoutUrl("/users/logout")
                 .logoutSuccessUrl("/products/all")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");

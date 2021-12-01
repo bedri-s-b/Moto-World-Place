@@ -1,8 +1,12 @@
 package com.example.motoworldplace.service.impl;
 
 import com.example.motoworldplace.model.binding.ProductBindingModel;
+import com.example.motoworldplace.model.binding.ProductUpdateBindingModel;
 import com.example.motoworldplace.model.entity.PictureEntity;
 import com.example.motoworldplace.model.entity.ProductEntity;
+import com.example.motoworldplace.model.entity.UserEntity;
+import com.example.motoworldplace.model.entity.enums.RoleEnum;
+import com.example.motoworldplace.model.service.ProductServiceModel;
 import com.example.motoworldplace.model.view.ProductsViewModel;
 import com.example.motoworldplace.repository.PictureRepository;
 import com.example.motoworldplace.repository.ProductRepository;
@@ -10,10 +14,13 @@ import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.ProductService;
 import com.example.motoworldplace.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,13 +33,15 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final PictureService pictureService;
     private final PictureRepository pictureRepository;
+    private final MotoWorldUserServiceImpl motoWorldUserService;
 
-    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, UserService userService, PictureService pictureService, PictureRepository pictureRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, UserService userService, PictureService pictureService, PictureRepository pictureRepository, MotoWorldUserServiceImpl motoWorldUserService) {
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.pictureService = pictureService;
         this.pictureRepository = pictureRepository;
+        this.motoWorldUserService = motoWorldUserService;
     }
 
     @Transactional
@@ -60,9 +69,46 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public ProductsViewModel findProductById(Long id) {
+    public ProductsViewModel findProductById(Long id, Principal principal) {
         ProductEntity product = productRepository.findByCurrentId(id);
-        return mapPVM(product);
+        if (principal == null){
+            return mapPVM(product);
+        }
+        UserEntity currentUser = userService.findByUserName(principal.getName());
+        return mapPVM(product).setOwnerOfProduct(product.getSeller().getUsername().equals(currentUser.getUsername())
+                || currentUser.getRole().equals(RoleEnum.ADMIN));
+    }
+
+    @Override
+    public ProductServiceModel findProductServiceModelById(Long id) {
+        ProductEntity product = productRepository.findByCurrentId(id);
+        return modelMapper.map(product, ProductServiceModel.class);
+    }
+
+    @Override
+    public void editProduct(ProductUpdateBindingModel productUpdateBindingModel, String username) {
+        UserEntity user = userService.findByUserName(username);
+        ProductEntity product = productRepository.findByCurrentId(productUpdateBindingModel.getId());
+        ProductEntity productUpdate = modelMapper.map(productUpdateBindingModel, ProductEntity.class);
+        ProductEntity productSave = modelMapper.map(productUpdate, ProductEntity.class);
+        productSave.setCreated(LocalDateTime.now());
+        productSave.setSeller(user);
+        productRepository.save(productSave);
+    }
+
+    @Override
+    public boolean isOwnerOfProduct(String userName, Long id) {
+
+        UserEntity seller = productRepository.findByCurrentId(id).getSeller();
+        if (seller.getRole().equals(RoleEnum.ADMIN)) {
+            return true;
+        }
+        return seller.getUsername().equals(userName);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
     private ProductEntity map(ProductBindingModel pbm) {
@@ -80,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
                 .setYear(pbm.getYear());
     }
 
-    private ProductsViewModel mapPVM(ProductEntity productEntity){
+    private ProductsViewModel mapPVM(ProductEntity productEntity) {
         return new ProductsViewModel()
                 .setModel(productEntity.getModel())
                 .setBrand(productEntity.getBrand())

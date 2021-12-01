@@ -20,6 +20,7 @@ public class UserEntity extends BaseEntity {
     private Set<GroupEntity> groups = new HashSet<>();
     private RoleEnum groupEnum;
     private RoleEnum role;
+    private EventEntity eventEntity;
 
     public UserEntity() {
     }
@@ -121,6 +122,13 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setGroupEnum(RoleEnum groupEnum) {
         this.groupEnum = groupEnum;
+        return this;
+    }
+
+
+
+    public UserEntity setEventEntity(EventEntity eventEntity) {
+        this.eventEntity = eventEntity;
         return this;
     }
 }
