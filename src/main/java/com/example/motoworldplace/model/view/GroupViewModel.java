@@ -16,6 +16,7 @@ public class GroupViewModel {
     private Set<String> membersName = new HashSet<>();
     private String picture;
     private LocalDate created;
+    private EventViewModel eventViewModel;
     private boolean canJoin;
 
     public Long getId() {
@@ -87,6 +88,15 @@ public class GroupViewModel {
 
     public GroupViewModel setCanJoin(boolean canJoin) {
         this.canJoin = canJoin;
+        return this;
+    }
+
+    public EventViewModel getEventViewModel() {
+        return eventViewModel;
+    }
+
+    public GroupViewModel setEventViewModel(EventViewModel eventViewModel) {
+        this.eventViewModel = eventViewModel;
         return this;
     }
 }

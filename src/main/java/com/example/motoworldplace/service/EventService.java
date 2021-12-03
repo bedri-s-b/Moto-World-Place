@@ -18,4 +18,10 @@ public interface EventService {
     boolean isCreatorEvent(String userName, Long id);
 
     void addMember(Long idEvent, String name);
+
+    void deleteEvent(Long idEvent, String name);
+
+    EventViewModel findMostSoonEvent(String groupName);
+
+    List<EventViewModel> findAllEventsOnThisGroup(String name);
 }

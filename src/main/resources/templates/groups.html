@@ -21,7 +21,7 @@
                 <section class=" card-body d-flex flex-column align-items-start">
                     <strong class="h3 mb-4 justify-content-center text-primary" th:text="*{name}">Free reader</strong>
                     <h3 class="h4 mb-2">members - <span th:text="*{members}">235</span></h3>
-                    <h3 class="h4 mb-2">Upcoming events <span> мото събор на 23.04.2021</span></h3>
+                    <h3 class="h4 mb-2">Upcoming events <span th:text="*{getEventViewModel().title} + ' ' + *{getEventViewModel().started}" > мото събор на 23.04.2021</span></h3>
                     <h3 class="h4 mb-2">Admin of the group <span th:text="*{admin}">User</span></h3>
                     <h3 class="h4 mb-2">Created on <span th:text="*{created}">User</span></h3>
 

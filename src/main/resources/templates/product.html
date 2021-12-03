@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-text"> Year: <span th:text="*{year}" class="text-info"></span></div>
                         <div class="card-text"> Phone: <span th:text="*{phoneNumber}" class="text-info"></span></div>
-                        <div class="card-text"> Seller: <span th:text="*{seller}" class="text-info"></span></div>
+                        <a class="card-text" th:if="${!notLog}" th:href="@{/users/profile/{id}(id=*{idSeller})}"> Seller: <span th:text="*{seller}" class="text-info"></span></a>
                         <div class="card-text"> Created: <span th:text="*{created}" class="text-info"></span></div>
                         <textbox th:text="*{description}" class="form-control " type="te" name="message" id="message"
                                  maxlength="6000" rows="7"></textbox>

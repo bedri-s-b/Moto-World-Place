@@ -30,7 +30,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 //достъпно за всички.....
                 .antMatchers("/","/home","/users/login","/users/register","/products/**").permitAll()
                 //достъп за останалите
-                .antMatchers("/**").authenticated()
+                .antMatchers("/groups/**","/home/**","/user/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
 
 
                 // как да се извърши логин

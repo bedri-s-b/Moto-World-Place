@@ -34,7 +34,7 @@
                 <label for="date-and-time" class="text-white font-weight-bold">Date and time</label>
                 <div id="date-and-time" class="form-group col-md-6 mb-3">
 
-                    <p class="text-info" th:text="*{stared}">23.23.2001</p>
+                    <p class="text-info" th:text="*{getStarted()}">23.23.2001</p>
                 </div>
 
             </div>
@@ -60,11 +60,14 @@
 
 
         <div class="row" th:if="${event.isCanDelete()}">
-            <div class="col col-md-4">
-                <div class="button-holder d-flex">
-                    <form type="submit" class="btn btn-warning btn-lg"> Delete event</form>
+            <form th:method="DELETE"
+                  th:action="@{/groups/{idGroup}/group/events/{idEvent}(idGroup=${idGroup},idEvent=${idEvent})}">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <button type="submit" class="btn btn-warning btn-lg">Delete event</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
 

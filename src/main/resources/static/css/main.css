@@ -7,6 +7,15 @@ body {
     background-color: #8c0c19;
 }
 
+.error-page{
+    background-image: url('/images/crash.jpg'); /*./static/img/4300766.jpg*/
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #d3bdbf;
+}
+
 header{
 
     font-style: oblique;;
@@ -197,7 +206,7 @@ Inbox Message Style
     margin-top: -5px;
 }
 div.message-body span.unread{
-    background: #b11b07;
+    background: #8c0c19;
 }
 
 .messages-inbox .message-body p {
@@ -212,8 +221,30 @@ a:hover{
 }
 
 div .event{
-    border: solid #b11b07;
+    border: solid #8c0c19;
     border-radius: 50px;
     line-height: 14px;
     background-color: #dceadf;
+}
+
+table{
+    border:1px solid #234465;
+    padding: 1%;
+    margin: 0 auto;
+    width: 70%;
+    border-radius: 4px;
+}
+table th{
+    text-decoration: underline;
+    text-align: center;
+}
+table tbody td{
+    text-align: center;
+    border-bottom:1px solid black;
+    padding: 0.5%;
+}
+
+table tbody tr:nth-child(even){
+    background-color: #8c0c19;
+    color: white;
 }

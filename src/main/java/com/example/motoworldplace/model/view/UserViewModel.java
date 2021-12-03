@@ -18,6 +18,7 @@ public class UserViewModel {
     private Set<String> groups = new HashSet<>();
     private RoleEnum role;
 
+
     public Long getId() {
         return id;
     }

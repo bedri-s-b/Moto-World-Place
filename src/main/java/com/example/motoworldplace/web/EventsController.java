@@ -2,7 +2,9 @@ package com.example.motoworldplace.web;
 
 import com.example.motoworldplace.model.binding.EventBindingModel;
 import com.example.motoworldplace.model.service.EventServiceModel;
+import com.example.motoworldplace.model.service.GroupServiceModel;
 import com.example.motoworldplace.model.view.EventViewModel;
+import com.example.motoworldplace.model.view.GroupViewModel;
 import com.example.motoworldplace.service.EventService;
 import com.example.motoworldplace.service.GroupService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,15 +32,17 @@ public class EventsController {
 
     @GetMapping("/groups/{idGroup}/group/events")
     public String getAllEvents(@PathVariable("idGroup") Long id, Model model) {
-        model.addAttribute("idGroup", id);
-        List<EventViewModel> events = eventService.findAllEvents();
+        GroupViewModel  group = groupService.checkExistGroup(id);
+        model.addAttribute("idGroup", group.getId());
+        List<EventViewModel> events = eventService.findAllEventsOnThisGroup(group.getName());
         model.addAttribute("events", events);
         return "events";
     }
 
     @GetMapping("/groups/{idGroup}/group/events/add")
     public String addEvents(@PathVariable("idGroup") Long id, Model model) {
-        model.addAttribute("idGroup", id);
+        GroupViewModel  group = groupService.checkExistGroup(id);
+        model.addAttribute("idGroup", group.getId());
         return "add-event";
     }
 
@@ -86,6 +90,16 @@ public class EventsController {
         model.addAttribute("idGroup", idGroup).addAttribute("idEvent", idEvent);
         eventService.addMember(idEvent, principal.getName());
         return "redirect:/groups/" + idGroup + "/group/events/" + idEvent;
+    }
+
+    @PreAuthorize("isCreatorEvent(#idEvent)")
+    @DeleteMapping("/groups/{idGroup}/group/events/{idEvent}")
+    public String deleteEvent(@PathVariable("idGroup") Long idGroup,
+                              @PathVariable("idEvent") Long idEvent,
+                              Principal principal) {
+      eventService.deleteEvent(idEvent,principal.getName());
+
+        return "redirect:/groups/" + idGroup + "/group/events";
     }
 
     @ModelAttribute

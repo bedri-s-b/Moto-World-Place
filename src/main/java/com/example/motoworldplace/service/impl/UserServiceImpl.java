@@ -16,6 +16,7 @@ import com.example.motoworldplace.service.MessageService;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
 import com.example.motoworldplace.service.cluodinary.CloudinaryService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -157,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findByUserName(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException(username));
     }
 
     @Override
@@ -183,13 +185,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isOwner(String username, Long id) {
 
-        UserEntity userEntity = userRepository.findById(id).get();
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
 
-        if (userEntity.getRole().equals(RoleEnum.ADMIN)){
+        if (userEntity.getRole().equals(RoleEnum.ADMIN)) {
             return true;
         }
 
         return userEntity.getUsername().equals(username);
+    }
+
+    @Override
+    public List<UserViewModel> findAllUsers() {
+        return userRepository.findAll().stream().map(userEntity -> modelMapper.map(userEntity, UserViewModel.class)).collect(Collectors.toList());
+
     }
 
 

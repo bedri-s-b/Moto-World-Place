@@ -10,7 +10,7 @@ public class EventViewModel {
     private Long id;
     private String title;
     private String description;
-    private String stared;
+    private String started;
     private String creator;
     private String group;
     private Set<UserEventServiceModel> membersCome = new HashSet<>();
@@ -25,7 +25,7 @@ public class EventViewModel {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.stared = stared;
+        this.started = stared;
         this.creator = creator;
         this.group = group;
     }
@@ -57,12 +57,12 @@ public class EventViewModel {
         return this;
     }
 
-    public String getStared() {
-        return stared;
+    public String getStarted() {
+        return started;
     }
 
-    public EventViewModel setStared(String stared) {
-        this.stared = stared;
+    public EventViewModel setStarted(String started) {
+        this.started = started;
         return this;
     }
 

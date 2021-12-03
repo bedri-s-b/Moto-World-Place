@@ -12,21 +12,20 @@ import com.example.motoworldplace.model.view.UserViewModel;
 import com.example.motoworldplace.repository.GroupRepository;
 import com.example.motoworldplace.repository.MessageRepository;
 import com.example.motoworldplace.repository.UserRepository;
+import com.example.motoworldplace.service.EventService;
 import com.example.motoworldplace.service.GroupService;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
-import com.example.motoworldplace.service.cluodinary.CloudinaryService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +40,9 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final MotoWorldUserServiceImpl motoWorldUserService;
+    private final EventService eventService;
 
-    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, PictureService pictureService, ModelMapper modelMapper, UserRepository userRepository, MessageRepository messageRepository, MotoWorldUserServiceImpl motoWorldUserService) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserService userService, PictureService pictureService, ModelMapper modelMapper, UserRepository userRepository, MessageRepository messageRepository, MotoWorldUserServiceImpl motoWorldUserService, EventService eventService) {
         this.groupRepository = groupRepository;
         this.userService = userService;
         this.pictureService = pictureService;
@@ -50,6 +50,7 @@ public class GroupServiceImpl implements GroupService {
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
         this.motoWorldUserService = motoWorldUserService;
+        this.eventService = eventService;
     }
 
     @Override
@@ -65,10 +66,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupViewModel> findAllGroup(Principal principal) {
-        return
-                groupRepository.findAll().stream()
-                        .map(groupEntity -> map(groupEntity, principal.getName()))
-                        .collect(Collectors.toList());
+
+        return groupRepository.findAll().stream()
+                .map(groupEntity -> map(groupEntity,groupEntity.getAdmin().getUsername())).collect(Collectors.toList());
     }
 
     @Override
@@ -103,7 +103,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupViewModel findGroupViewModelById(Long id, UserViewModel userViewModel) {
-        GroupEntity group = groupRepository.findById(id).get();
+        GroupEntity group = groupRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
         return new GroupViewModel()
                 .setName(group.getName())
                 .setAdmin(group.getAdmin().getUsername())
@@ -138,6 +138,7 @@ public class GroupServiceImpl implements GroupService {
 
 
     private GroupViewModel map(GroupEntity groupEntity, String username) {
+
         GroupViewModel groupViewModel = new GroupViewModel();
         groupViewModel.setName(groupEntity.getName());
         groupViewModel.setCanJoin(isMember(username, groupEntity.getId()));
@@ -146,6 +147,7 @@ public class GroupServiceImpl implements GroupService {
         groupViewModel.setPicture(groupEntity.getPicture().getUrl());
         groupViewModel.setCreated(groupEntity.getCreated());
         groupViewModel.setId(groupEntity.getId());
+        groupViewModel.setEventViewModel(eventService.findMostSoonEvent(groupEntity.getName()));
         return groupViewModel;
     }
 
@@ -153,14 +155,14 @@ public class GroupServiceImpl implements GroupService {
     public boolean isMember(String username, Long id) {
 
 
-        GroupEntity group = groupRepository.findById(id).orElse(null);
+        GroupEntity group = groupRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
 
-        UserEntity user = userRepository.findByUsername(username).orElse(null);
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException(id));
         if (user.getRole().equals(RoleEnum.ADMIN)){
             return true;
         }
 
-        if (user == null || group == null) {
+        if (group == null) {
             return false;
         } else {
             for (UserEntity m : group.getMembers()) {
@@ -175,7 +177,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public String findNameById(Long id) {
-        return groupRepository.findById(id).get().getName();
+        return groupRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id)).getName();
+    }
+
+    @Override
+    public GroupViewModel checkExistGroup(Long id) {
+        GroupEntity groupEntity = groupRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
+        return map(groupEntity,groupEntity.getAdmin().getUsername());
     }
 
 

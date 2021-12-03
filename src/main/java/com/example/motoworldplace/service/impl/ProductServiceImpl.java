@@ -13,6 +13,7 @@ import com.example.motoworldplace.repository.ProductRepository;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.ProductService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +72,8 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductsViewModel findProductById(Long id, Principal principal) {
-        ProductEntity product = productRepository.findByCurrentId(id);
+        ProductEntity product = productRepository.findByCurrentId(id).orElseThrow(() -> new ObjectNotFoundException(id));
+
         if (principal == null){
             return mapPVM(product);
         }
@@ -81,14 +84,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductServiceModel findProductServiceModelById(Long id) {
-        ProductEntity product = productRepository.findByCurrentId(id);
+       ProductEntity product = productRepository.findByCurrentId(id).orElseThrow(() -> new ObjectNotFoundException(id));
         return modelMapper.map(product, ProductServiceModel.class);
     }
 
     @Override
     public void editProduct(ProductUpdateBindingModel productUpdateBindingModel, String username) {
         UserEntity user = userService.findByUserName(username);
-        ProductEntity product = productRepository.findByCurrentId(productUpdateBindingModel.getId());
+        Long id = productUpdateBindingModel.getId();
+        ProductEntity product = productRepository.findByCurrentId(id).orElseThrow(() -> new ObjectNotFoundException(id));;
         ProductEntity productUpdate = modelMapper.map(productUpdateBindingModel, ProductEntity.class);
         ProductEntity productSave = modelMapper.map(productUpdate, ProductEntity.class);
         productSave.setCreated(LocalDateTime.now());
@@ -99,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean isOwnerOfProduct(String userName, Long id) {
 
-        UserEntity seller = productRepository.findByCurrentId(id).getSeller();
+        UserEntity seller = productRepository.findByCurrentId(id).orElseThrow(() -> new ObjectNotFoundException(id)).getSeller();
         if (seller.getRole().equals(RoleEnum.ADMIN)) {
             return true;
         }
@@ -141,6 +145,7 @@ public class ProductServiceImpl implements ProductService {
                 .setPowerHp(productEntity.getPowerHp())
                 .setYear(productEntity.getYear())
                 .setSeller(productEntity.getSeller().getFullName())
+                .setIdSeller(productEntity.getSeller().getId())
                 .setDescription(productEntity.getDescription())
                 .setCreated(productEntity.getCreated().format(DateTimeFormatter.ofPattern("dd MMM uuuu HH:mm")));
     }

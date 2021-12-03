@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+
+</head>
+
+
+<body>
+
+<header th:replace="fragments/navbar :: nav"></header>
+
+<main>
+
+    <button id="loadAllProducts" class="btn-outline-info">LOAD ALL PRODUCTS</button>
+    <div class="container">
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>brand</th>
+                <th>model</th>
+                <th>type</th>
+                <th>power</th>
+                <th>price</th>
+                <th>year</th>
+                <th>phone</th>
+                <th>seller</th>
+                <th>description</th>
+                <th>created</th>
+            </tr>
+            </thead>
+            <tbody id="products-container"></tbody>
+        </table>
+
+    </div>
+
+
+    <button id="loadAllEvent" class="btn-outline-info">LOAD ALL EVENT</button>
+    <div class="container">
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>description</th>
+                <th>started</th>
+                <th>creator</th>
+
+            </tr>
+            </thead>
+            <tbody id="events-container"></tbody>
+        </table>
+
+    </div>
+
+    <button id="loadAllUser" class="btn-outline-info">LOAD ALL USER</button>
+    <div class="container">
+
+        <table >
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>age</th>
+                <th>city</th>
+                <th>role</th>
+
+            </tr>
+            </thead>
+            <tbody id="user-container"></tbody>
+        </table>
+
+    </div>
+    <script src="./js/app.js"></script>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+
+</html>

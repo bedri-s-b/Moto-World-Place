@@ -6,7 +6,9 @@ import com.example.motoworldplace.model.service.ProductServiceModel;
 import com.example.motoworldplace.model.view.ProductsViewModel;
 import com.example.motoworldplace.service.ProductService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -69,7 +72,15 @@ public class ProductController {
     @GetMapping("/{id}/details")
     public String detailsProduct(@PathVariable("id") Long id, Model model,Principal principal) {
         ProductsViewModel product = productService.findProductById(id,principal);
+        if (product == null){
+            throw new ObjectNotFoundException(id);
+        }
         model.addAttribute("product", product);
+        if (principal == null){
+            model.addAttribute("notLog",true);
+        }else {
+            model.addAttribute("notLog",false);
+        }
         return "product";
     }
 
@@ -105,7 +116,7 @@ public class ProductController {
         return "edit-product";
     }
 
-
+    @PreAuthorize("isOwnerOfProduct(#id)")
     @DeleteMapping("{id}")
     public String deleteProduct(@PathVariable("id") Long id){
         productService.deleteProduct(id);
@@ -118,6 +129,8 @@ public class ProductController {
     public ProductBindingModel productBindingModel() {
         return new ProductBindingModel();
     }
+
+
 
 
 }

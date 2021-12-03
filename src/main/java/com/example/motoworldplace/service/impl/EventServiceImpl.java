@@ -12,6 +12,7 @@ import com.example.motoworldplace.repository.EventRepository;
 import com.example.motoworldplace.repository.GroupRepository;
 import com.example.motoworldplace.repository.UserRepository;
 import com.example.motoworldplace.service.EventService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -48,23 +49,22 @@ public class EventServiceImpl implements EventService {
         return eventServiceModel;
     }
 
-    @Transactional
     @Override
     public List<EventViewModel> findAllEvents() {
-        var all = eventRepository.findAll();
-        return all.stream().map(this::mapView).collect(Collectors.toList());
+        return eventRepository.findAll().stream().map(this::mapView).collect(Collectors.toList());
     }
+
 
     @Transactional
     @Override
-    public EventViewModel findEventWithId(Long idEvent,Principal principal) {
-        EventViewModel eventViewModel = mapView(eventRepository.findByIdCurrent(idEvent));
+    public EventViewModel findEventWithId(Long idEvent, Principal principal) {
+        EventViewModel eventViewModel = mapView(eventRepository.findByIdCurrent(idEvent).orElseThrow(() -> new ObjectNotFoundException(idEvent)));
         eventViewModel.setMemberEvent(eventViewModel
                 .getMembersCome()
                 .stream()
-                .anyMatch(a ->a.getUsername().equals(principal.getName())));
+                .anyMatch(a -> a.getUsername().equals(principal.getName())));
         eventViewModel.setCanDelete(eventViewModel.getCreator().equals(principal.getName()) ||
-                userRepository.findByUsername(principal.getName()).get().getRole().equals(RoleEnum.ADMIN));
+                userRepository.findByUsername(principal.getName()).orElseThrow(()-> new ObjectNotFoundException(principal.getName())).getRole().equals(RoleEnum.ADMIN));
 
         return eventViewModel;
 
@@ -73,15 +73,39 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public boolean isCreatorEvent(String userName, Long id) {
-        return eventRepository.findById(id).get().getCreator().getUsername().equals(userName);
+        return eventRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id)).getCreator().getUsername().equals(userName);
     }
 
     @Override
     public void addMember(Long idEvent, String name) {
-        EventEntity eventEntity = eventRepository.findByIdCurrent(idEvent);
-        UserEntity userEntity = userRepository.findByUsername(name).get();
+        EventEntity eventEntity = eventRepository.findByIdCurrent(idEvent).orElseThrow(() -> new ObjectNotFoundException(idEvent));
+        UserEntity userEntity = userRepository.findByUsername(name).orElseThrow(() -> new ObjectNotFoundException(name));
         eventEntity.getMembersCome().add(userEntity);
         eventRepository.save(eventEntity);
+    }
+
+    @Override
+    public void deleteEvent(Long idEvent, String name) {
+        eventRepository.deleteById(idEvent);
+    }
+
+    @Transactional
+    @Override
+    public EventViewModel findMostSoonEvent(String groupName) {
+        var events = eventRepository.findEventsByGroupNameOrderByStared(groupName);
+        if (events.isEmpty()){
+            return new EventViewModel().setTitle("Creat firs event in this group")
+                    .setStarted("Now ;)");
+        }
+        int size = events.size();
+        return mapView(events.get(size - 1));
+    }
+
+    @Transactional
+    @Override
+    public List<EventViewModel> findAllEventsOnThisGroup(String name) {
+        var all = eventRepository.findEventsByGroupNameOrderByStared(name);
+        return all.stream().map(this::mapView).collect(Collectors.toList());
     }
 
     private EventViewModel mapView(EventEntity eventEntity) {
@@ -95,7 +119,7 @@ public class EventServiceImpl implements EventService {
                 eventEntity.getGroup().getName()
 
         );
-        eventViewModel.setMembersCome( eventEntity.getMembersCome().stream().map(e -> modelMapper.map(e, UserEventServiceModel.class)).collect(Collectors.toSet()));
+        eventViewModel.setMembersCome(eventEntity.getMembersCome().stream().map(e -> modelMapper.map(e, UserEventServiceModel.class)).collect(Collectors.toSet()));
         return eventViewModel;
     }
 }

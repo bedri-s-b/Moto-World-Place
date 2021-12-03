@@ -21,6 +21,7 @@ public class ProductsViewModel {
     private Integer year;
     private String phoneNumber;
     private String seller;
+    private Long idSeller;
     private String description;
     private Set<String> pictures = new HashSet<>();
     private String created;
@@ -150,6 +151,15 @@ public class ProductsViewModel {
 
     public ProductsViewModel setOwnerOfProduct(boolean ownerOfProduct) {
         isOwnerOfProduct = ownerOfProduct;
+        return this;
+    }
+
+    public Long getIdSeller() {
+        return idSeller;
+    }
+
+    public ProductsViewModel setIdSeller(Long idSeller) {
+        this.idSeller = idSeller;
         return this;
     }
 }

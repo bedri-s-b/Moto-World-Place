@@ -8,6 +8,7 @@ import com.example.motoworldplace.model.view.UserViewModel;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -34,4 +35,5 @@ public interface UserService {
     boolean isOwner(String username,Long id);
 
 
+    List<UserViewModel> findAllUsers();
 }

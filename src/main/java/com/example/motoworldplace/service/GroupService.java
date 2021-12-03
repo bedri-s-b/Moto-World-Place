@@ -28,4 +28,6 @@ public interface GroupService {
     boolean isMember(String username, Long id);
 
     String findNameById(Long id);
+
+    GroupViewModel checkExistGroup(Long id);
 }

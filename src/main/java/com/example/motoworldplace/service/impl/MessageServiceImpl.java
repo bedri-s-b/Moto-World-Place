@@ -9,6 +9,7 @@ import com.example.motoworldplace.repository.MessageRepository;
 import com.example.motoworldplace.repository.UserRepository;
 import com.example.motoworldplace.service.MessageService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public boolean isOwnerOnMessages(String username, Long id) {
-        if (userRepository.findByUsername(username).get().getRole().equals(RoleEnum.ADMIN)){
+        if (userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException(id)).getRole().equals(RoleEnum.ADMIN)){
             return true;
         }
         List<Long> byUserSend = messageRepository.findByToUser_Username(username)
