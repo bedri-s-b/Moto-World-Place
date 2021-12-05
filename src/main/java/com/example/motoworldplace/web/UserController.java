@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register(Model model){
+    public String register(){
         return "register";
     }
 

@@ -19,7 +19,7 @@ public class GroupEntity extends BaseEntity {
     }
 
 
-    @ManyToMany(mappedBy = "groups",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "groups",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public Set<UserEntity> getMembers() {
         return members;
     }

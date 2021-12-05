@@ -6,6 +6,8 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
 
 public class MotoWorldMethodSecurityExpressionHandler
         extends DefaultMethodSecurityExpressionHandler {

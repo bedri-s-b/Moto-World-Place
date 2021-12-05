@@ -18,14 +18,15 @@ public class UserEntity extends BaseEntity {
     private CityEntity city;
     private PictureEntity picture;
     private Set<GroupEntity> groups = new HashSet<>();
+    private Set<GroupEntity> groupAdmin;
     private RoleEnum groupEnum;
     private RoleEnum role;
-    private EventEntity eventEntity;
+
 
     public UserEntity() {
     }
 
-    @Column(unique = true, nullable = false, length = 20)
+    @Column(unique = true, nullable = false)
     public String getUsername() {
         return username;
     }
@@ -56,7 +57,7 @@ public class UserEntity extends BaseEntity {
     }
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public Set<GroupEntity> getGroups() {
         return groups;
     }
@@ -126,9 +127,13 @@ public class UserEntity extends BaseEntity {
     }
 
 
+    @OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
+    public Set<GroupEntity> getGroupAdmin() {
+        return groupAdmin;
+    }
 
-    public UserEntity setEventEntity(EventEntity eventEntity) {
-        this.eventEntity = eventEntity;
+    public UserEntity setGroupAdmin(Set<GroupEntity> groupAdmin) {
+        this.groupAdmin = groupAdmin;
         return this;
     }
 }

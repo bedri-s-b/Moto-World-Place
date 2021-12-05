@@ -1,0 +1,18 @@
+logging:
+  level:
+    blog: WARN
+    org: WARN
+    org.hibernate.SQL: DEBUG
+server:
+  port: 8000
+  error:
+    include-stacktrace: never
+
+
+
+cloudinary:
+  cloud-name: ddzhmgfet
+  api-secret: ${CLOUDINARY_API_SECRET}
+  api-key: 897776243255849
+
+

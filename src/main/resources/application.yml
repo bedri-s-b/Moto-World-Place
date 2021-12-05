@@ -33,7 +33,8 @@ spring:
         enabled: true
 
 cloudinary:
-  api-key: 897776243255849
-  api-secret: ${CLOUDINARY_API_SECRET}
   cloud-name: ddzhmgfet
+  api-secret: ${CLOUDINARY_API_SECRET}
+  api-key: 897776243255849
+
 

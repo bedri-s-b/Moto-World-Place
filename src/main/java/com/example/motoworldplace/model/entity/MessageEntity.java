@@ -16,7 +16,8 @@ public class MessageEntity extends BaseEntity {
     public MessageEntity() {
     }
 
-    @Column(columnDefinition = "longtext",nullable = false)
+    @Lob
+    @Column(nullable = false)
     public String getMessage() {
         return message;
     }
@@ -26,15 +27,7 @@ public class MessageEntity extends BaseEntity {
         return this;
     }
 
-    @ManyToOne
-    public UserEntity getFromUser() {
-        return fromUser;
-    }
 
-    public MessageEntity setFromUser(UserEntity fromUser) {
-        this.fromUser = fromUser;
-        return this;
-    }
 
     public LocalDateTime getTime() {
         return time;
@@ -42,6 +35,16 @@ public class MessageEntity extends BaseEntity {
 
     public MessageEntity setTime(LocalDateTime time) {
         this.time = time;
+        return this;
+    }
+
+    @ManyToOne()
+    public UserEntity getFromUser() {
+        return fromUser;
+    }
+
+    public MessageEntity setFromUser(UserEntity fromUser) {
+        this.fromUser = fromUser;
         return this;
     }
 
@@ -55,7 +58,7 @@ public class MessageEntity extends BaseEntity {
         return this;
     }
 
-    @ManyToOne
+   @ManyToOne()
     public UserEntity getToUser() {
         return toUser;
     }
@@ -69,4 +72,6 @@ public class MessageEntity extends BaseEntity {
     public void beforeCreate() {
         setTime(LocalDateTime.now().plusHours(3));
     }
+
+
 }

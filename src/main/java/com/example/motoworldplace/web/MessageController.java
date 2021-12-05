@@ -5,6 +5,9 @@ import com.example.motoworldplace.model.view.MessageViewModel;
 import com.example.motoworldplace.model.view.UserViewModel;
 import com.example.motoworldplace.service.MessageService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.service.event.MessageEventCreate;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -23,12 +26,13 @@ import java.util.List;
 public class MessageController {
 
     private final MessageService messageService;
-    public final UserService userService;
+    private final UserService userService;
+    private final ApplicationEventPublisher eventPublisher;
 
-
-    public MessageController(MessageService messageService, UserService userService) {
+    public MessageController(MessageService messageService, UserService userService, ApplicationEventPublisher eventPublisher) {
         this.messageService = messageService;
         this.userService = userService;
+        this.eventPublisher = eventPublisher;
     }
 
 
@@ -76,10 +80,12 @@ public class MessageController {
     @GetMapping("/users/message/{id}/send")
     public String getMessageForm(@PathVariable Long id, @AuthenticationPrincipal UserDetails user, Model model) {
         UserViewModel currentUser = userService.findUserViewModelByUsername(user.getUsername());
-        String toUsername = userService.findById(id).orElseThrow().getUsername();
+        String toUsername = userService.findById(id).orElseThrow(() -> new ObjectNotFoundException(id)).getUsername();
         UserViewModel toUser = userService.findUserViewModelByUsername(toUsername);
         model.addAttribute("current", currentUser);
         model.addAttribute("toUser", toUser);
+        MessageEventCreate messageEventCreate = new MessageEventCreate(this,toUsername,toUser.getUsername());
+        eventPublisher.publishEvent(messageEventCreate);
         return "message-send";
     }
 

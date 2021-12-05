@@ -106,9 +106,9 @@ public class ApplicationConfig {
     public Cloudinary cloudinary(){
         return new Cloudinary(
                 Map.of(
-                      "cloud_name",cloudinaryConfig.getCloudName(),
-                      "api_key",cloudinaryConfig.getApiKey(),
-                      "api_secret",cloudinaryConfig.getApiSecret()
+                        "cloud_name", cloudinaryConfig.getCloudName(),
+                        "api_key", cloudinaryConfig.getApiKey(),
+                        "api_secret", cloudinaryConfig.getApiSecret()
                 )
         );
     }

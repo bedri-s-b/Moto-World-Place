@@ -4,6 +4,7 @@ import com.example.motoworldplace.model.binding.UserProfileUpdateBindingModel;
 import com.example.motoworldplace.model.service.UserServiceModel;
 import com.example.motoworldplace.service.PictureService;
 import com.example.motoworldplace.service.UserService;
+import com.example.motoworldplace.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,16 +38,15 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String showProfile(@AuthenticationPrincipal User user, Model model, Principal principal) {
-        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(), principal).orElse(null);
+        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(), principal).orElseThrow(() -> new ObjectNotFoundException(principal.getName()));
         model.addAttribute("profile", userServiceModel);
         return "profile";
     }
 
     @GetMapping("/profile/{id}")
     public String showProfileWithId(@PathVariable("id") Long id, Model model, Principal principal) {
-        UserServiceModel user = this.userService.findById(id).orElse(null);
-        UserServiceModel userServiceModel = this.userService.findByUsername(user.getUsername(), principal).orElse(null);
-        model.addAttribute("profile", userServiceModel);
+        UserServiceModel user = this.userService.findById(id).orElseThrow(() -> new ObjectNotFoundException(id));
+        model.addAttribute("profile", user);
         return "profile";
     }
 

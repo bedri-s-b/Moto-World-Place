@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "cloudinary")
 public class CloudinaryConfig {
-    private String cloudName;
-    private String apiKey;
+    private String cloudName = "ddzhmgfet";
+    private String apiKey = "897776243255849";
     private String apiSecret;
 
     public String getCloudName() {
@@ -15,8 +15,8 @@ public class CloudinaryConfig {
     }
 
     /**
-     * Sets the cloud name
-     * @param cloudName
+     * Sets the cloud name associated with the cloudinary account.
+     * @param cloudName the cloud name associated with the cloudinary account.
      * @return this
      */
 

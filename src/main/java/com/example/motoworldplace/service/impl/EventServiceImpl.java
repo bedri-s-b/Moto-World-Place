@@ -97,8 +97,7 @@ public class EventServiceImpl implements EventService {
             return new EventViewModel().setTitle("Creat firs event in this group")
                     .setStarted("Now ;)");
         }
-        int size = events.size();
-        return mapView(events.get(size - 1));
+        return mapView(events.get(0));
     }
 
     @Transactional

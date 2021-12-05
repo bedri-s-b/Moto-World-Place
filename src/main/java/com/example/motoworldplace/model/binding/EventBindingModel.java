@@ -11,7 +11,6 @@ public class EventBindingModel {
 
     private String title;
     private String description;
-   // private String user;
     private String started;
     private String creator;
     private String group;
